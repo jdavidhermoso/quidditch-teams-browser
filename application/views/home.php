@@ -12,13 +12,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   <link rel="stylesheet" href="<?php echo VENDORSPATH; ?>materialize/dist/css/materialize.css">
 </head>
 <body>
-  <header>
-    <nav>
-      <div class="nav-wrapper">
-        <a href="#!" class="brand-logo">Logo</a>
-        <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
-        <?php require('header/desktop_nav.php'); ?>
-        <?php require('header/mobile_nav.php'); ?>
+  <header class="qtb-header">
+    <nav class="qtb-nav">
+      <div class="qtb-nav-links-wrapper">
+        <a href="#!" class="brand-logo center">
+          <img src="../../dist/images/logo.png" class="responsive-img" alt="Buscador de equipos españoles de quidditch" title="Buscador de equipos españoles de quidditch">
+        </a>
+        <a href="#" data-activates="qtb-side-nav" class="qtb-nav-collapse-btn button-collapse">
+          <i class="material-icons">menu</i>
+        </a>
+        <?php require('header/nav_template.php'); ?>
       </div>
     </nav>
 
