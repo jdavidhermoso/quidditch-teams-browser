@@ -1,16 +1,26 @@
 .qtb-nav {
   @include transparentize($primary-r-dark, $primary-g-dark, $primary-b-dark, 0.8);
+  height: 48px;
+  line-height: 48px;
 }
 .qtb-nav-collapse-btn.button-collapse {
   display: block;
+  i.material-icons {
+    height: 48px;
+    line-height: 48px;
+  }
 }
 
 .qtb-side-nav-close-btn {
   i.material-icons {
+    height: 48px;
     line-height: 48px;
   }
 }
 
 .qtb-nav .brand-logo {
   font-size: 14px;
+  img {
+    max-height: 48px;
+  }
 }

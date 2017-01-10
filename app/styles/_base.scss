@@ -11,6 +11,19 @@ html {
   background-size: cover;
 }
 
-.page:not(.active) {
+.qtb-pages-container {
+  width: 90%;
+  max-width: 90%;
+  margin: 0 auto;
+}
+
+.qtb-page {
+  overflow: hidden;
+
+}
+.qtb-active-page {
+  margin-top: 75px;
+}
+.qtb-page:not(.qtb-active-page) {
   display: none;
 }
