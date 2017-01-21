@@ -1,26 +1,31 @@
 .qtb-nav {
   @include transparentize($primary-r-dark, $primary-g-dark, $primary-b-dark, 0.8);
-  height: 48px;
-  line-height: 48px;
-}
-.qtb-nav-collapse-btn.button-collapse {
-  display: block;
-  i.material-icons {
-    height: 48px;
-    line-height: 48px;
-  }
-}
+  height: $header_height;
+  line-height: $header_height;
 
-.qtb-side-nav-close-btn {
-  i.material-icons {
-    height: 48px;
-    line-height: 48px;
+  .qtb-side-nav-open-btn {
+    display: block;
+    margin: 0 18px;
+    height: $header_height;
+    i.material-icons {
+      height: 100%;
+      line-height: $header_height;
+    }
   }
-}
 
-.qtb-nav .brand-logo {
-  font-size: 14px;
-  img {
-    max-height: 48px;
+  .qtb-side-nav-close-btn {
+    i.material-icons {
+      height: $header_height;
+      line-height: $header_height;
+    }
   }
+
+  .brand-logo {
+    font-size: 14px;
+    height: $header_height;
+    img {
+      height: 100%;
+    }
+  }
+
 }
