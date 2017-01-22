@@ -1,36 +1,83 @@
-label.qtb-search-label {
-  display: block;
-  font-size: 35px;
-  text-align: center;
-  color: $primary-color-dark;
-}
-input[type=text].qtb-search-input {
-  height: 46px;
-  //padding: 0 40px;
-  font-size: 25px;
-  float:left;
-  background: $home-bg-search-input !important;
-  border: none;
-  border-radius: 2px;
-  &:focus {
-    border-bottom: none!important;
-    box-shadow: none!important;
+.qtb-search-form {
+  overflow: hidden;
+  label.qtb-search-label {
+    display: block;
+    font-size: 35px;
+    text-align: center;
+    color: $primary-color-dark;
+  }
+  input[type=text].qtb-search-input {
+    width: 90%;
+    height: 46px;
+    margin-bottom: 0;
+    //padding: 0 40px;
+    font-size: 15px;
+    float:left;
+    background: $home-bg-search-input !important;
+    border: none;
+    border-radius: 2px;
+    &.with-results {
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+    &:focus {
+      border-bottom: none!important;
+      box-shadow: none!important;
+    }
+  }
+  .qtb-search-icon-container {
+    width: 10%;
+    height: 46px;
+    float: right;
+    background-color: $home-bg-search-input-icon;
+    cursor: pointer;
+    &:hover  {
+      background-color: $home-bg-search-input-icon-hover;
+    }
+    i.material-icons {
+      width: 100%;
+      height: 100%;
+      line-height: 46px;
+      text-align: center;
+      font-size: 25px;
+      color: $home-search-input-icon-color;
+    }
+  }
+
+  input::-webkit-input-placeholder {
+    color: $home-bg-search-input-placeholder;
+  }
+
+  input:-ms-input-placeholder {
+    color: $home-bg-search-input-placeholder;
+  }
+
+  input::-moz-placeholder {
+    color: $home-bg-search-input-placeholder;
   }
 }
-.qtb-search-btn.btn {
-  background-color: $home-bg-search-input-button;
-  float: right;
-  margin: 0 auto;
-}
 
-input::-webkit-input-placeholder {
-  color: $home-bg-search-input-placeholder;
-}
+.qtb-search-input-results-list-container {
 
-input:-ms-input-placeholder {
-  color: $home-bg-search-input-placeholder;
-}
+  ul.qtb-search-input-results-list {
+    margin-top: 0;
+  }
+  li.qtb-search-input-result {
+    display: block;
+    background: #FFFFFF;
+    height: 46px;
+    line-height: 46px;
+    &:last-child {
+      border-bottom-left-radius: 2px;
+      border-bottom-right-radius: 2px;
+    }
+    span.qtb-search-input-result-team-name {
 
-input::-moz-placeholder {
-  color: $home-bg-search-input-placeholder;
+    }
+    img.qtb-search-input-result-logo {
+      max-height: 34px;
+      margin: 0 10px;
+      vertical-align: middle;
+    }
+  }
 }

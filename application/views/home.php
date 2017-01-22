@@ -6,7 +6,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <head>
   <meta charset="UTF-8"/>
   <title>Backbone.js Library</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="<?php echo CSSPATH; ?>main.css">
   <link rel="stylesheet" href="<?php echo VENDORSPATH; ?>materialize/dist/css/materialize.css">
@@ -29,23 +29,30 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   <div id="qtb-home-map"></div>
   <div class="qtb-page qtb-active-page row" id="home">
     <div class="qtb-search-form-container col s12 m8 l8 offset-m2 offset-l2">
-      <form>
+      <form class="qtb-search-form" id="search_form">
         <label class="qtb-search-label">
           Busca un equipo
         </label>
         <div class="qtb-search-input-container">
-          <input type="text" class="qtb-search-input" placeholder="Buscar equipo..."/>
-        </div>
-        <div class="qtb-search-btn-container">
-          <button class="qtb-search-btn btn waves-effect waves-light" type="submit" name="action">
-            Buscar
-          </button>
+          <input type="text" class="qtb-search-input" id="search_input" placeholder="Nombre, Província, Ciudad... " autofocus />
+          <div class="qtb-search-icon-container" id="search_button">
+            <i class="material-icons">search</i>
+          </div>
         </div>
       </form>
+      <div class="qtb-search-input-results-list-container">
+        <ul class="qtb-search-input-results-list">
+        </ul>
+      </div>
     </div>
-
   </div>
 </div>
+<script id="teamsSearchResultsListTemplate" type="text/template">
+  <li class="qtb-search-input-result">
+    <img src="<%= logo %>" class="qtb-search-input-result-logo" alt="<%= name %>" title="<%= name %>" />
+    <span class="qtb-search-input-result-team-name"><%= name %></span>
+  </li>
+</script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDFSyLDFSZpSIYjnqwKxFwoRxl6U9SVs5k"></script>
 <script src="<?php echo VENDORSPATH; ?>jquery/dist/jquery.min.js"></script>
 <script src="<?php echo VENDORSPATH; ?>underscore/underscore-min.js"></script>
@@ -53,6 +60,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <script src="<?php echo VENDORSPATH; ?>materialize/dist/js/materialize.js"></script>
 <!-- <script src="<?php echo JSPATH; ?>router/router.js"></script> -->
 <script src="<?php echo JSPATH; ?>views/sidebar.view.js"></script>
+<script src="<?php echo JSPATH; ?>views/searchForm.view.js"></script>
 <script src="<?php echo JSPATH; ?>app.js"></script>
 </body>
 </html>
