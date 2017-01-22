@@ -41,15 +41,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         </div>
       </form>
       <div class="qtb-search-input-results-list-container">
-        <ul class="qtb-search-input-results-list">
+        <ul class="qtb-search-input-results-list" id="search_form_results_list">
         </ul>
       </div>
     </div>
   </div>
 </div>
-<script id="teamsSearchResultsListTemplate" type="text/template">
+<script id="searchResultsListTemplate" type="text/template">
   <li class="qtb-search-input-result">
-    <img src="<%= logo %>" class="qtb-search-input-result-logo" alt="<%= name %>" title="<%= name %>" />
+    <% src = logo ? logo : 'defaultbatch.png' %>
+    <img src="<%= src %>" class="qtb-search-input-result-logo" alt="<%= name %>" title="<%= name %>" />
     <span class="qtb-search-input-result-team-name"><%= name %></span>
   </li>
 </script>
@@ -59,6 +60,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <script src="https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.3.3/backbone-min.js"></script>
 <script src="<?php echo VENDORSPATH; ?>materialize/dist/js/materialize.js"></script>
 <!-- <script src="<?php echo JSPATH; ?>router/router.js"></script> -->
+<script src="<?php echo JSPATH; ?>models/searchFormResultList.model.js"></script>
+<script src="<?php echo JSPATH; ?>collections/searchFormResultsList.collection.js"></script>
 <script src="<?php echo JSPATH; ?>views/sidebar.view.js"></script>
 <script src="<?php echo JSPATH; ?>views/searchForm.view.js"></script>
 <script src="<?php echo JSPATH; ?>app.js"></script>
