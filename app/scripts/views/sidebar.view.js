@@ -9,7 +9,6 @@ app.SideBarView = Backbone.View.extend({
   },
 
   initialize: function() {
-    console.log(this.el);
     this.render();
 
   },
