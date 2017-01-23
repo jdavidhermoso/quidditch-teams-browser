@@ -11,7 +11,7 @@ app.SearchFormView = Backbone.View.extend({
   },
 
   initialize: function() {
-    console.log('a');
+
   },
 
   render: function() {
@@ -25,13 +25,21 @@ app.SearchFormView = Backbone.View.extend({
     this.$el.find(this.ui.results_list).removeClass();
   },
 
+  voidResultsList: function() {
+    var view = this;
+    view.$el.find(view.ui.results_list).empty();
+    app.searchFormResultsListCollection.reset();
+  },
+
   performSearch: function() {
-    var searchString = $(this.ui.search_input).val(),
+    var searchString = $(this.ui.search_input).val().split(' ').join('+'),
       view = this;
 
     if (searchString.length < 4) {
+      view.voidResultsList();
       return;
     }
+
     app.searchFormResultsListCollection.fetch({
       reset: true,
       data: {
