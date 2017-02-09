@@ -25,7 +25,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
   </nav>
 </header>
-<div class="qtb-pages-container">
+<div class="qtb-pages-container" id="qtb_pages_container">
   <div id="qtb-home-map"></div>
   <div class="qtb-page qtb-active-page row" id="home">
     <div class="qtb-search-form-container col s12 m8 l8 offset-m2 offset-l2">
@@ -34,7 +34,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
           Busca un equipo
         </label>
         <div class="qtb-search-input-container">
-          <input type="text" class="qtb-search-input" id="search_input" placeholder="Nombre, Província, Ciudad... " autofocus />
+          <input type="text" class="qtb-search-input" id="search_input" placeholder="Nombre, Província, Ciudad... "
+                 autofocus/>
           <div class="qtb-search-icon-container" id="search_button">
             <i class="material-icons">search</i>
           </div>
@@ -46,24 +47,25 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       </div>
     </div>
   </div>
+  <div class="qtb-page row" id="team_profile"></div>
 </div>
-<script id="searchResultsListTemplate" type="text/template">
-  <li class="qtb-search-input-result">
-    <% src = logo ? logo : 'dist/images/badges/defaultbadge.png' %>
-    <img src="<%= src %>" class="qtb-search-input-result-logo" alt="<%= name %>" title="<%= name %>" />
-    <span class="qtb-search-input-result-team-name"><%= name %>, <%= township %>, <%= province %> </span>
-  </li>
-</script>
+
+<?php
+  include ('templates/team_profile.php');
+  include ('templates/home_search_results_list.php');
+?>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDFSyLDFSZpSIYjnqwKxFwoRxl6U9SVs5k"></script>
 <script src="<?php echo VENDORSPATH; ?>jquery/dist/jquery.min.js"></script>
 <script src="<?php echo VENDORSPATH; ?>underscore/underscore-min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.3.3/backbone-min.js"></script>
 <script src="<?php echo VENDORSPATH; ?>materialize/dist/js/materialize.js"></script>
-<!-- <script src="<?php echo JSPATH; ?>router/router.js"></script> -->
-<script src="<?php echo JSPATH; ?>models/searchFormResultList.model.js"></script>
-<script src="<?php echo JSPATH; ?>collections/searchFormResultsList.collection.js"></script>
+<script src="<?php echo JSPATH; ?>router/main.router.js"></script>
+<script src="<?php echo JSPATH; ?>models/team.model.js"></script>
+<script src="<?php echo JSPATH; ?>collections/teams.collection.js"></script>
+<script src="<?php echo JSPATH; ?>views/main.view.js"></script>
 <script src="<?php echo JSPATH; ?>views/sidebar.view.js"></script>
 <script src="<?php echo JSPATH; ?>views/searchForm.view.js"></script>
+<script src="<?php echo JSPATH; ?>views/teamProfile.view.js"></script>
 <script src="<?php echo JSPATH; ?>app.js"></script>
 </body>
 </html>
