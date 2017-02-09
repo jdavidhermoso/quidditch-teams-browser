@@ -3,7 +3,8 @@ app.SearchFormView = Backbone.View.extend({
   el: '#home',
   searchResultsListTpl: _.template( $( '#searchResultsListTemplate' ).html() ),
   events: {
-    'input #search_input': 'performSearch'
+    'input #search_input': 'performSearch',
+    'click .qtb-search-input-result' : 'selectTeamProfile'
   },
   ui: {
     'search_input': '#search_input',
@@ -13,7 +14,6 @@ app.SearchFormView = Backbone.View.extend({
   initialize: function() {
 
   },
-
   render: function() {
   },
 
@@ -26,9 +26,12 @@ app.SearchFormView = Backbone.View.extend({
   },
 
   voidResultsList: function() {
-    var view = this;
-    view.$el.find(view.ui.results_list).empty();
-    app.searchFormResultsListCollection.reset();
+    this.$el.find(this.ui.results_list).empty();
+    app.teamsCollection.reset();
+  },
+
+  emptySearchInput: function() {
+    this.$el.find(this.ui.search_input).val('');
   },
 
   performSearch: function() {
@@ -40,14 +43,15 @@ app.SearchFormView = Backbone.View.extend({
       return;
     }
 
-    app.searchFormResultsListCollection.fetch({
+    this.setShortSearchURL();
+    app.teamsCollection.fetch({
       reset: true,
       data: {
         'str': searchString
       },
       success: function() {
         view.$el.find(view.ui.results_list).empty();
-        app.searchFormResultsListCollection.each(function (team) {
+        app.teamsCollection.each(function (team) {
           view.renderSearchResultItem(team);
         }, this);
       },
@@ -55,5 +59,13 @@ app.SearchFormView = Backbone.View.extend({
         Materialize.toast('Algo no ha ido bien!', 3000);
       }
     });
+  },
+  selectTeamProfile: function() {
+    //TODO: Navigate to team profile.
+    this.emptySearchInput();
+    this.voidResultsList();
+  },
+  setShortSearchURL: function() {
+    app.teamsCollection.url = app.teamsCollection.urls.shortSearchURL;
   }
 });
