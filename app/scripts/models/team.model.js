@@ -1,5 +1,5 @@
 var app = app || {};
-app.SearchFormReslutListItem = Backbone.Model.extend({
+app.Team = Backbone.Model.extend({
   defaults: {
     id: 0,
     logo: '',
@@ -8,3 +8,4 @@ app.SearchFormReslutListItem = Backbone.Model.extend({
     township: ''
   }
 });
+
