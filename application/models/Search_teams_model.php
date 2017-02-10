@@ -32,5 +32,24 @@ class Search_teams_model extends CI_Model
     }
     return $teamsGroup;
   }
+
+  public function teamSearch($id = 0)
+  {
+    $teamsGroup = array();
+    $teamArr = array();
+    $query = "SELECT team.id, team.name, team.logo, p.name as province, t.name as town FROM qtb_teams team LEFT JOIN townships t ON t.id = team.township LEFT JOIN provinces p ON p.id = t.province WHERE team.id = ".$id." AND active = 1 ORDER BY team.name ASC, p.name ASC, t.name ASC LIMIT 1";
+    $teamsQuery = $this->db->query($query);
+    foreach ($teamsQuery->result() as $team)
+    {
+      $teamArr['id'] = $team->id;
+      $teamArr['name'] = $team->name;
+      //$teamArr['logo'] = $team->logo;
+      $teamArr['province'] = $team->province;
+      $teamArr['township'] = $team->town;
+      array_push($teamsGroup,$teamArr);
+      unset($teamArr);
+    }
+    return $teamsGroup;
+  }
 }
 ?>
