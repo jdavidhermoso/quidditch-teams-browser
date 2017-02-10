@@ -4,6 +4,5 @@ app.TeamsCollection = Backbone.Collection.extend({
     shortSearchURL: 'index.php/search/short',
     teamURL: 'index.php/search/team'
   },
-  model: app.Team,
-  url: ''
+  model: app.Team
 });

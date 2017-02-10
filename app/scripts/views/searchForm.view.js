@@ -60,10 +60,12 @@ app.SearchFormView = Backbone.View.extend({
       }
     });
   },
-  selectTeamProfile: function() {
-    //TODO: Navigate to team profile.
+  selectTeamProfile: function(e) {
+    var teamId = $(e.currentTarget).data('id');
     this.emptySearchInput();
     this.voidResultsList();
+
+    app.router.navigate('/teams/'+teamId, {trigger: true});
   },
   setShortSearchURL: function() {
     app.teamsCollection.url = app.teamsCollection.urls.shortSearchURL;

@@ -19,7 +19,8 @@ app.SideBarView = Backbone.View.extend({
     });
   },
 
-  closeSidebar: function() {
+  closeSidebar: function(e) {
+    e.preventDefault();
     $(this.ui.sidebar_open_btn).sideNav('hide');
   }
 });
