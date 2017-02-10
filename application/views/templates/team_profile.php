@@ -1,1 +1,3 @@
-<script id="teamProfileTemplate" type="text/template"></script>
+<script id="teamProfileTemplate" type="text/template">
+  <%= name %>
+</script>

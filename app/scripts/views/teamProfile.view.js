@@ -12,6 +12,7 @@ app.TeamProfileView = Backbone.View.extend({
     }
   },
   initialize: function(id) {
+    var view = this;
     this.setTeamUrl(id);
     app.teamsCollection.fetch({
       reset: true,
@@ -19,17 +20,23 @@ app.TeamProfileView = Backbone.View.extend({
         'id': id
       },
       success: function() {
+        if (!app.teamsCollection.models.length) {
+          app.router.navigateToHome();
+          return;
+        }
         app.teamsCollection.each(function (team) {
-          render();
+          view.render(team);
         }, this);
       },
       error: function() {
+        console.log(app.teamsCollection);
         Materialize.toast('Algo no ha ido bien!', 3000);
       }
     });
   },
-  render: function() {
-    $(app.mainView.ui.pages.team_profile).html(this.$el.html(this.template({ id: 32 })));
+  render: function(team) {
+    console.log(team);
+    $(app.mainView.ui.pages.team_profile).html(this.$el.html(this.template(team.toJSON())));
   },
   setTeamUrl: function() {
     app.teamsCollection.url = app.teamsCollection.urls.teamURL;

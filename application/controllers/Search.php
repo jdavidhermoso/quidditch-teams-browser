@@ -1,7 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Search extends CI_Controller {
+class Search extends CI_Controller
+{
   public function __construct()
   {
     parent::__construct();
@@ -19,6 +20,13 @@ class Search extends CI_Controller {
     $result = $this->Search_teams_model->shortSearch($str);
     echo json_encode($result);
     die();
+  }
 
+  public function team()
+  {
+    $id = $this->input->get('id');
+    $result = $this->Search_teams_model->teamSearch($id);
+    echo json_encode($result);
+    die();
   }
 }
