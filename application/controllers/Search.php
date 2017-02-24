@@ -29,4 +29,11 @@ class Search extends CI_Controller
     echo json_encode($result);
     die();
   }
+
+  public function teams()
+  {
+    $result = $this->Search_teams_model->getAllTeams();
+    echo json_encode($result);
+    die();
+  }
 }
