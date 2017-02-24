@@ -9,7 +9,7 @@
       </a>
     </li>
     <li>
-      <a href="#/teams">
+      <a href="#/teams/">
         Todos los equipos
       </a>
     </li>
