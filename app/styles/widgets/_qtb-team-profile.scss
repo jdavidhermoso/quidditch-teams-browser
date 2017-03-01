@@ -1,0 +1,43 @@
+.qtb-team-profile-container {
+  background: white;
+  border-radius: 2px;
+  padding-top: 0.75rem!important;
+  padding-bottom: 0.75rem!important;
+}
+
+.qtb-team-profile-info {
+  margin: 0;
+  li {
+    margin: 5px 0;
+  }
+}
+
+li.qtb-team-profile-name {
+  font-size: 21px;
+  font-weight: bold;
+  margin: 5px 0 15px 0;
+}
+
+.qtb-team-profile-province {
+  font-weight: bold;
+}
+
+.qtb-team-profile-logo {
+  width: 100%;
+  height: auto;
+}
+
+.qtb-team-profile-contact-title {
+  font-size: 16px;
+}
+
+.qtb-team-profile-contact-form-container {
+  margin-top: 15px;
+  .col {
+    padding: 0!important;
+  }
+
+  .qtb-team-profile-contact-form-disclaimer {
+
+  }
+}
