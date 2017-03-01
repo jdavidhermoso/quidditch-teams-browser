@@ -13,7 +13,12 @@ app.TeamProfileView = Backbone.View.extend({
       'active': 'qtb-active-page',
       'all': '.qtb-page',
       'home': '#home'
-    }
+    },
+    'contact_form': '#contact_form',
+    'from_email': '#contact_from_email',
+    'contact_subject': '#contact_subject',
+    'contact_message': '#contact_message'
+
   },
   initialize: function (id) {
     var view = this;
@@ -39,7 +44,7 @@ app.TeamProfileView = Backbone.View.extend({
   },
 
   render: function (team) {
-    var teamData = _.extend(team.toJSON(), {formatedEmail: this.renderEmailAddress(team.toJSON().email) });
+    var teamData = _.extend(team.toJSON(), {formatedEmail: this.renderEmailAddress(team.toJSON().email)});
     $(app.mainView.ui.pages.team_profile).html(this.$el.html(this.template(teamData)));
   },
 
@@ -68,7 +73,50 @@ app.TeamProfileView = Backbone.View.extend({
 
     return emailFormatted;
   },
-  sendEmail: function() {
-    console.log('a');
-  }
+  sendEmail: function () {
+    var view = this;
+
+    if (!this.validateForm()) {
+      Materialize.toast('¡Por favor, rellena correctamente el formulario de contacto!', 3000);
+      return;
+    }
+
+    var sendEmailRequest = $.ajax({
+      type: 'POST',
+      url: 'index.php/search/sendEmail',
+      data: {
+        id: 1,
+        from: 'aaa@gmail.com',
+        subject: 'test',
+        message: 'kasdfbnsdkm'
+      }
+    });
+
+    sendEmailRequest.then(function (response) {
+      var status = JSON.parse(response);
+
+      if (status.status && status.status > 0) {
+        Materialize.toast('¡Correo enviado correctamente!', 3000);
+        $(view.ui.contact_form)[0].reset();
+      }
+
+    }, function () {
+      Materialize.toast('¡El correo no ha podido ser enviado!', 3000);
+    });
+  },
+  validateForm: function() {
+    var validForm = false;
+
+    if (this.validateEmail($(this.ui.from_email).val()) && $(this.ui.contact_subject) && $(this.ui.contact_message)) {
+      validForm = true;
+    }
+
+    return validForm;
+  },
+
+  validateEmail: function(email) {
+  var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+  return re.test(email);
+}
 });

@@ -16,9 +16,9 @@
       </li>
       <li>
         <% if (formatedEmail) { %>
-            <a href="mailto:<%=formatedEmail%>">
-              Enviar e-mail
-            </a>
+        <a href="mailto:<%=formatedEmail%>">
+          Enviar e-mail
+        </a>
         <% } %>
       </li>
     </ul>
@@ -26,35 +26,37 @@
 
   <% if (formatedEmail) { %>
   <div class="qtb-team-profile-contact-form-container col s12">
-    <div class="qtb-disclaimer qtb-team-profile-contact-form-disclaimer">
-      <span> ATENCIÓN: </span> No almacenamos ninguna de la información que introduzcas en éste formulario.
-    </div>
-    <h2 class="qtb-team-profile-contact-title">
-      Contactar por e-mail
-    </h2>
-    <div class="input-field col s12  col s12 m5 l5">
-      <label for="contact_from_email">
-        From
-      </label>
-      <input type="email" id="contact_from_email" class="qtb-email-field"/>
-    </div>
-    <div class="input-field col s12 m6 l6 offset-m1 offset-l1">
-      <label for="contact_from_email">
-        Asunto
-      </label>
-      <input type="text" id="contact_subject" maxlength="50" class="qtb-text-field"/>
-    </div>
-    <div class="input-field col s12">
-      <label for="contact_from_email">
-        Mensaje
-      </label>
-      <textarea id="contact_message" class="qtb-text-area"></textarea>
-    </div>
-    <div class="qtb-contact-submit-btn-container right">
-      <button type="submit" id="contact_team" class="btn default qtb-contact-btn">
-        Enviar
-      </button>
-    </div>
+    <form id="contact_form">
+      <div class="qtb-disclaimer qtb-team-profile-contact-form-disclaimer">
+        <span> ATENCIÓN: </span> No almacenamos ninguna de la información que introduzcas en éste formulario.
+      </div>
+      <h2 class="qtb-team-profile-contact-title">
+        Contactar por e-mail
+      </h2>
+      <div class="input-field col s12  col s12 m5 l5">
+        <label for="contact_from_email">
+          From
+        </label>
+        <input type="email" id="contact_from_email" class="qtb-email-field"/>
+      </div>
+      <div class="input-field col s12 m6 l6 offset-m1 offset-l1">
+        <label for="contact_subject">
+          Asunto
+        </label>
+        <input type="text" id="contact_subject" maxlength="50" class="qtb-text-field"/>
+      </div>
+      <div class="input-field col s12">
+        <label for="contact_message">
+          Mensaje
+        </label>
+        <textarea id="contact_message" class="qtb-text-area"></textarea>
+      </div>
+      <div class="qtb-contact-submit-btn-container right">
+        <button type="submit" id="contact_team" class="btn default qtb-contact-btn">
+          Enviar
+        </button>
+      </div>
+    </form>
   </div>
 
   <% } %>
