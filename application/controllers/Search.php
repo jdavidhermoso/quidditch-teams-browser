@@ -36,4 +36,22 @@ class Search extends CI_Controller
     echo json_encode($result);
     die();
   }
+
+  public function sendEmail()
+  {
+    $id = $this->input->post('id');
+    $from = $this->input->post('from');
+    $subject = $this->input->post('subject');
+    $message = $this->input->post('message');
+    $email = $this->Search_teams_model->teamSearch($id)[0]['email'];
+    $response = ["status" => 0];
+
+    //TODO: Send email
+    if (true) {
+      $response["status"] = 100;
+    }
+
+    echo json_encode($response);
+    die();
+  }
 }
