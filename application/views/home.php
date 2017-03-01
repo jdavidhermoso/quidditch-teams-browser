@@ -22,8 +22,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       <i class="material-icons valign">menu</i>
     </span>
     <?php require('header/nav_template.php'); ?>
-
   </nav>
+  <div class="qtb-disclaimer qtb-home-updates-disclaimer">
+    <span>
+      ATENCIÓN: Estamos trabajando para mejorar la aplicación.
+    </span>
+  </div>
 </header>
 <div class="qtb-pages-container" id="qtb_pages_container">
   <div id="qtb-home-map"></div>
@@ -54,6 +58,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <?php
   include ('templates/team_profile.php');
   include ('templates/home_search_results_list.php');
+  include ('templates/team_not_found.php');
 ?>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDFSyLDFSZpSIYjnqwKxFwoRxl6U9SVs5k"></script>
 <script src="<?php echo VENDORSPATH; ?>jquery/dist/jquery.min.js"></script>
