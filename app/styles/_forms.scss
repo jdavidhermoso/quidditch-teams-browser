@@ -1,0 +1,17 @@
+label {
+  &.active {
+    left: 0!important;
+    transform: translateY(-200%)!important;
+  }
+
+  &:not(.active) {
+
+  }
+}
+
+.qtb-text-area {
+  max-width: 100%;
+  background-color: #F0F0F0;
+  border-radius: 2px;
+  height: 100px;
+}
