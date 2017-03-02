@@ -30,7 +30,8 @@ app.TeamProfileView = Backbone.View.extend({
       },
       success: function () {
         if (!app.teamsCollection.models.length) {
-          view.renderTeamNotFound();
+          //view.renderTeamNotFound();
+          app.router.navigateToHome();
           return;
         }
         app.teamsCollection.each(function (team) {
