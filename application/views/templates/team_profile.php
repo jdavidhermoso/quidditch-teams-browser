@@ -37,19 +37,19 @@
         <label for="contact_from_email">
           From
         </label>
-        <input type="email" id="contact_from_email" class="qtb-email-field"/>
+        <input type="email" id="contact_from_email" class="qtb-email-field" required/>
       </div>
       <div class="input-field col s12 m6 l6 offset-m1 offset-l1">
         <label for="contact_subject">
           Asunto
         </label>
-        <input type="text" id="contact_subject" maxlength="50" class="qtb-text-field"/>
+        <input type="text" id="contact_subject" maxlength="50" class="qtb-text-field" required/>
       </div>
       <div class="input-field col s12">
         <label for="contact_message">
           Mensaje
         </label>
-        <textarea id="contact_message" class="qtb-text-area" maxlength="1500"></textarea>
+        <textarea id="contact_message" class="qtb-text-area" maxlength="1500" required></textarea>
       </div>
       <div class="qtb-contact-submit-btn-container right">
         <button type="submit" id="contact_team" class="btn default qtb-contact-btn">

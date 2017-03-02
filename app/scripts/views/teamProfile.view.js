@@ -5,7 +5,6 @@ app.TeamProfileView = Backbone.View.extend({
   template: _.template($('#teamProfileTemplate').html()),
   teamNotFoundTemplate: _.template($('#teamNotFoundTemplate').html()),
   events: {
-    'input #contact_from_email': 'capitalizeEmail',
     'click #contact_team': 'sendEmail'
   },
   ui: {
@@ -30,8 +29,7 @@ app.TeamProfileView = Backbone.View.extend({
       },
       success: function () {
         if (!app.teamsCollection.models.length) {
-          //view.renderTeamNotFound();
-          app.router.navigateToHome();
+          view.renderTeamNotFound();
           return;
         }
         app.teamsCollection.each(function (team) {
@@ -57,10 +55,6 @@ app.TeamProfileView = Backbone.View.extend({
     app.teamsCollection.url = app.teamsCollection.urls.teamURL;
   },
 
-  capitalizeEmail: function (e) {
-    var email = $(e.target).val();
-    $(e.target).val(email.toLowerCase());
-  },
   renderEmailAddress: function (email) {
     var atCode = '&#64;',
       emailArray = email.split('@'),
@@ -74,10 +68,11 @@ app.TeamProfileView = Backbone.View.extend({
 
     return emailFormatted;
   },
-  sendEmail: function () {
+  sendEmail: function (e) {
+    e.preventDefault();
     var view = this;
 
-    if (!this.validateForm()) {
+    if (!app.mainView.validateForm()) {
       Materialize.toast('¡Por favor, rellena correctamente el formulario de contacto!', 3000);
       return;
     }
@@ -104,20 +99,5 @@ app.TeamProfileView = Backbone.View.extend({
     }, function () {
       Materialize.toast('¡El correo no ha podido ser enviado!', 3000);
     });
-  },
-  validateForm: function() {
-    var validForm = false;
-
-    if (this.validateEmail($(this.ui.from_email).val()) && $(this.ui.contact_subject) && $(this.ui.contact_message)) {
-      validForm = true;
-    }
-
-    return validForm;
-  },
-
-  validateEmail: function(email) {
-  var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
-  return re.test(email);
-}
+  }
 });
