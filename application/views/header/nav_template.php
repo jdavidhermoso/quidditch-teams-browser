@@ -8,15 +8,15 @@
         Inicio
       </a>
     </li>
-    <li>
+    <!-- <li>
       <a href="#/teams/">
         Todos los equipos
       </a>
-    </li>
-    <li>
+    </li> -->
+    <!-- <li>
       <a href="#/about">
         Acerca
       </a>
-    </li>
+    </li> -->
   </ul>
 </div>
