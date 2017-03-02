@@ -49,7 +49,7 @@
         <label for="contact_message">
           Mensaje
         </label>
-        <textarea id="contact_message" class="qtb-text-area"></textarea>
+        <textarea id="contact_message" class="qtb-text-area" maxlength="1500"></textarea>
       </div>
       <div class="qtb-contact-submit-btn-container right">
         <button type="submit" id="contact_team" class="btn default qtb-contact-btn">
