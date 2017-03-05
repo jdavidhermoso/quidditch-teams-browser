@@ -5,11 +5,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
-  <title>Backbone.js Library</title>
+  <title>Quidditch Teams Browser</title>
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="<?php echo CSSPATH; ?>main.css">
   <link rel="stylesheet" href="<?php echo VENDORSPATH; ?>materialize/dist/css/materialize.css">
+  <link rel="stylesheet" href="<?php echo VENDORSPATH; ?>cropperjs/dist/cropper.css">
 </head>
 <body>
 <header class="qtb-header" id="header">
@@ -53,6 +54,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   </div>
   <div class="qtb-page row" id="team_profile"></div>
   <div class="qtb-page row" id="teams_gallery"></div>
+  <div class="qtb-page row" id="manage_team">
+    <?php
+      include ('manage_team.php');
+    ?>
+  </div>
 </div>
 
 <?php
@@ -65,6 +71,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <script src="<?php echo VENDORSPATH; ?>underscore/underscore-min.js"></script>
 <script src="<?php echo VENDORSPATH; ?>backbone/backbone.js"></script>
 <script src="<?php echo VENDORSPATH; ?>materialize/dist/js/materialize.js"></script>
+<script src="<?php echo VENDORSPATH; ?>cropperjs/dist/cropper.js"></script>
 <script src="<?php echo JSPATH; ?>router/main.router.js"></script>
 <script src="<?php echo JSPATH; ?>models/team.model.js"></script>
 <script src="<?php echo JSPATH; ?>collections/teams.collection.js"></script>
@@ -73,6 +80,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <script src="<?php echo JSPATH; ?>views/searchForm.view.js"></script>
 <script src="<?php echo JSPATH; ?>views/teamsGallery.view.js"></script>
 <script src="<?php echo JSPATH; ?>views/teamProfile.view.js"></script>
+<script src="<?php echo JSPATH; ?>views/manageTeam.view.js"></script>
 <script src="<?php echo JSPATH; ?>app.js"></script>
 </body>
 </html>

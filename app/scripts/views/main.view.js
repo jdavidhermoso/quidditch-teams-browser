@@ -10,13 +10,11 @@ app.MainView = Backbone.View.extend({
       'active': 'qtb-active-page',
       'all': '.qtb-page',
       'home': '#home',
-      'team_profile': '#team_profile'
+      'team_profile': '#team_profile',
+      'manage_team' : '#manage_team'
     }
   },
   initialize: function () {
-    $('input[type=email]').on('input', function() {
-      alert();
-    });
   },
   render: function () {
   },
@@ -39,7 +37,7 @@ app.MainView = Backbone.View.extend({
       validEmail = true;
 
     _.some(emailFields, function(input) {
-      if (!re.test($(input).val())) {
+      if (!re.test($(input).val()) && $(input).val()) {
         validEmail = false;
       }
     });

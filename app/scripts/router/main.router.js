@@ -5,6 +5,7 @@ app.QuidditchTeamsBrowserRouter = Backbone.Router.extend({
     "(/)" : "defaultRoute",
     "teams(/)" : "getTeamsGallery",
     "teams/:id(/)" : "getTeamProfile",
+    "add(/)" : "manageTeamForm",
     ":whatever": "notFound"
   },
   navigateToHome: function() {
@@ -22,10 +23,28 @@ app.QuidditchTeamsBrowserRouter = Backbone.Router.extend({
       return;
     }
 
+    if (app.teamProfile) {
+      app.teamProfile.remove();
+    }
+
     app.teamProfile = new app.TeamProfileView(id);
     app.mainView.showPage('team_profile');
   },
+  manageTeamForm: function() {
+    if (app.manageTeamModel) {
+      app.manageTeamModel.remove();
+    }
 
+    if (app.manageTeam) {
+      app.manageTeam.remove();
+    }
+
+    app.manageTeamModel = new app.Team();
+    app.manageTeam = new app.ManageTeamView({
+      model: app.manageTeamModel
+    });
+    app.mainView.showPage('manage_team');
+  },
   notFound: function() {
     this.navigateToHome();
   }

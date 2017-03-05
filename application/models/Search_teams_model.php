@@ -24,7 +24,7 @@ class Search_teams_model extends CI_Model
     {
       $teamArr['id'] = $team->id;
       $teamArr['name'] = $team->name;
-      //$teamArr['logo'] = $team->logo;
+      $teamArr['logo'] = $team->logo;
       $teamArr['province'] = $team->province;
       $teamArr['township'] = $team->town;
       array_push($teamsGroup,$teamArr);
@@ -43,7 +43,7 @@ class Search_teams_model extends CI_Model
     {
       $teamArr['id'] = $team->id;
       $teamArr['name'] = $team->name;
-      //$teamArr['logo'] = $team->logo;
+      $teamArr['logo'] = $team->logo;
       $teamArr['email'] = $team->email;
       $teamArr['province'] = $team->province;
       $teamArr['township'] = $team->town;
@@ -63,7 +63,7 @@ class Search_teams_model extends CI_Model
     {
       $teamArr['id'] = $team->id;
       $teamArr['name'] = $team->name;
-      //$teamArr['logo'] = $team->logo;
+      $teamArr['logo'] = $team->logo;
       $teamArr['email'] = $team->email;
       $teamArr['province'] = $team->province;
       $teamArr['township'] = $team->town;
@@ -72,5 +72,29 @@ class Search_teams_model extends CI_Model
     }
     return $teamsGroup;
   }
+
+  public function getAllProvinces()
+  {
+    $query = "SELECT id, name FROM provinces ORDER BY name asc";
+    $provQuery = $this->db->query($query)->result();
+
+    return $provQuery;
+  }
+
+  public function getTownships($province_id)
+  {
+    $query = "SELECT id, name FROM townships WHERE province =  ".$province_id." ORDER BY name asc";
+    $townsQuery = $this->db->query($query)->result();
+
+    return $townsQuery;
+  }
+
+
+  public function addTeam($name = '', $email = '', $township = 0, $logo = '')
+  {
+    $registerDate = date('Ymd');
+    return $this->db->query("INSERT INTO qtb_teams (name, email, township, logo, registerdate, active) VALUES ('$name', '$email', '$township', '$logo', '$registerDate', 1)");
+  }
+
 }
 ?>

@@ -1,3 +1,34 @@
+label.active {
+  left: 0 !important;
+  transform: translateY(-200%) !important; }
+
+.qtb-text-area {
+  max-width: 100%;
+  background-color: #F0F0F0;
+  border-radius: 2px;
+  height: 100px; }
+
+input[type=text].qtb-text-field:focus:not([readonly]), input[type=email].qtb-email-field:focus:not([readonly]) {
+  border-bottom: 1px solid #960101;
+  box-shadow: 0 1px 0 0 #960101; }
+
+textarea {
+  outline-width: 0;
+  border: 0;
+  border-bottom: 1px solid #9e9e9e; }
+  textarea:focus:not([readonly]) {
+    border-bottom: 1px solid #960101;
+    box-shadow: 0 1px 0 0 #960101; }
+
+.qtb-logo-selector-wrapper {
+  border: 1px solid #960101; }
+
+.btn.qtb-contact-btn, .btn.qtb-team-logo-btn {
+  background-color: #ae0001;
+  color: #ffffff; }
+  .btn.qtb-contact-btn:hover, .btn.qtb-contact-btn:focus, .btn.qtb-team-logo-btn:hover, .btn.qtb-team-logo-btn:focus {
+    background-color: #960101; }
+
 html, body {
   width: 100%;
   height: 100%; }
@@ -21,7 +52,8 @@ html {
   overflow: hidden; }
 
 .qtb-active-page {
-  margin-top: 75px; }
+  margin-top: 50px;
+  margin-bottom: 50px; }
 
 .qtb-page:not(.qtb-active-page) {
   display: none; }
@@ -33,7 +65,8 @@ html {
   .qtb-nav .qtb-side-nav-open-btn {
     display: block;
     margin: 0 18px;
-    height: 48px; }
+    height: 48px;
+    cursor: pointer; }
     .qtb-nav .qtb-side-nav-open-btn i.material-icons {
       height: 100%;
       line-height: 48px; }
@@ -45,6 +78,12 @@ html {
     height: 48px; }
     .qtb-nav .brand-logo img {
       height: 100%; }
+
+.qtb-disclaimer {
+  padding: 10px;
+  text-align: center;
+  background-color: #E13300;
+  color: #ffff00; }
 
 .qtb-search-form {
   overflow: hidden; }
@@ -107,5 +146,68 @@ html {
     max-height: 34px;
     margin: 0 10px;
     vertical-align: middle; }
+
+.qtb-team-profile-container {
+  background: white;
+  border-radius: 2px;
+  padding-top: 0.75rem !important;
+  padding-bottom: 0.75rem !important; }
+
+.qtb-team-profile-info {
+  margin: 0; }
+  .qtb-team-profile-info li {
+    margin: 5px 0; }
+
+li.qtb-team-profile-name {
+  font-size: 21px;
+  font-weight: bold;
+  margin: 5px 0 15px 0; }
+
+.qtb-team-profile-province {
+  font-weight: bold; }
+
+.qtb-team-profile-logo {
+  width: 100%;
+  height: auto; }
+
+.qtb-team-profile-contact-title {
+  font-size: 16px; }
+
+.qtb-team-profile-contact-form-container {
+  margin-top: 15px; }
+  .qtb-team-profile-contact-form-container .col {
+    padding: 0 !important; }
+
+.qtb-manage-team-container {
+  background: white;
+  border-radius: 2px;
+  padding-top: 0.75rem !important;
+  padding-bottom: 0.75rem !important; }
+
+.qtb-manage-team-crop-logo-modal-image {
+  max-width: 100%; }
+
+.qtb-manage-team-crop-logo-modal {
+  max-height: 100% !important; }
+
+.qtb-manage-team-crop-logo-modal-image-container {
+  max-height: 400px; }
+
+.qtb-manage-team-logo-previsualize {
+  width: 200px;
+  height: 200px;
+  margin: 10px auto; }
+  .qtb-manage-team-logo-previsualize img.qtb-team-logo-previsualize-img {
+    width: 100%;
+    height: 100%; }
+
+.qtb-manage-team-form-section-title {
+  text-align: center; }
+
+.qtb-logo-selector-wrapper {
+  margin-bottom: 10px; }
+
+#manage_team_logo_path {
+  display: none; }
 
 /*# sourceMappingURL=main.css.map */

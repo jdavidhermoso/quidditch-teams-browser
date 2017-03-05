@@ -54,4 +54,66 @@ class Search extends CI_Controller
     echo json_encode($response);
     die();
   }
+
+  public function getProvinces()
+  {
+    $result = $this->Search_teams_model->getAllProvinces();
+    echo json_encode($result);
+    die();
+  }
+
+  public function getTownships()
+  {
+    $province_id = $this->input->get('province_id');
+    $result = $this->Search_teams_model->getTownships($province_id);
+    echo json_encode($result);
+    die();
+  }
+
+  public function manageTeam()
+  {
+    switch ($this->getRequestType()) {
+      case 'get':
+        break;
+      case 'post':
+        $this->addNewTeam();
+        break;
+      case 'put':
+        break;
+      case 'delete':
+        break;
+    }
+
+  }
+
+  private function addNewTeam() {
+    $post_params = $this->get_post();
+    $name = $post_params['name'];
+    $email = $post_params['email'];
+    $logo = $post_params['logo'];
+    $township = $post_params['township'];
+
+    $this->Search_teams_model->addTeam($name, $email, $township, $logo);
+
+    $response = array('status' => 'OK');
+
+    $this->output
+      ->set_status_header(200)
+      ->set_content_type('application/json', 'utf-8')
+      ->set_output(json_encode($response, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES))
+      ->_display();
+    exit;
+
+  }
+
+  private function getRequestType()
+  {
+    return strtolower($this->input->server('REQUEST_METHOD'));
+  }
+
+  private function get_post() {
+    $rest_json = file_get_contents("php://input");
+    return json_decode($rest_json, true);
+  }
+
 }

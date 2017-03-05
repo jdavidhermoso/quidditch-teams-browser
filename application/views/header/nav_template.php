@@ -8,6 +8,11 @@
         Inicio
       </a>
     </li>
+    <li>
+      <a href="#/add">
+        Añadir equipo
+      </a>
+    </li>
     <!-- <li>
       <a href="#/teams/">
         Todos los equipos

@@ -1,0 +1,41 @@
+.qtb-manage-team-container {
+  background: white;
+  border-radius: 2px;
+  padding-top: 0.75rem!important;
+  padding-bottom: 0.75rem!important;
+}
+
+.qtb-manage-team-crop-logo-modal-image{
+  max-width: 100%;
+}
+
+.qtb-manage-team-crop-logo-modal {
+  max-height: 100%!important;
+}
+
+.qtb-manage-team-crop-logo-modal-image-container {
+  max-height: 400px;
+}
+
+.qtb-manage-team-logo-previsualize {
+  width: 200px;
+  height: 200px;
+  margin: 10px auto;
+
+  & img.qtb-team-logo-previsualize-img {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.qtb-manage-team-form-section-title {
+  text-align: center;
+}
+
+.qtb-logo-selector-wrapper {
+  margin-bottom: 10px;
+}
+
+#manage_team_logo_path {
+  display: none;
+}

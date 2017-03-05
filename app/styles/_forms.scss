@@ -32,7 +32,11 @@ textarea {
   }
 }
 
-.btn.qtb-contact-btn {
+.qtb-logo-selector-wrapper {
+  border: 1px solid $primary-color-dark;
+}
+
+.btn.qtb-contact-btn, .btn.qtb-team-logo-btn {
   background-color: $primary-color-light;
   color: $white;
 
