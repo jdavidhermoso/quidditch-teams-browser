@@ -1,9 +1,9 @@
 <script id="teamProfileTemplate" type="text/template">
-  <div class="qtb-team-profile-logo-container col s2 m3 l3">
+  <div class="qtb-team-profile-logo-container col s4 m3 l3">
     <% src = logo ? logo : 'dist/images/badges/defaultlogo.jpg' %>
     <img src="<%= src %>" class="qtb-team-profile-logo" alt="<%= name %>" title="<%= name %>"/>
   </div>
-  <div class="qtb-team-profile-info-container col s10 m9 l9">
+  <div class="qtb-team-profile-info-container col s8 m9 l9">
     <ul class="qtb-team-profile-info">
       <li class="qtb-team-profile-name">
         <%= name %>
