@@ -33,14 +33,30 @@ textarea {
 }
 
 .qtb-logo-selector-wrapper {
-  border: 1px solid $primary-color-dark;
+  border-bottom: 1px solid $primary-color-dark;
 }
 
-.btn.qtb-contact-btn, .btn.qtb-team-logo-btn {
+.btn.qtb-contact-btn, .btn.qtb-manage-team-select-logo-image-btn {
+  cursor: pointer;
   background-color: $primary-color-light;
   color: $white;
+  white-space: nowrap;
 
   &:hover, &:focus {
     background-color: $primary-color-dark;
+  }
+}
+
+.qtb-manage-team-fields-container {
+  margin-bottom: 10px;
+  overflow: hidden;
+  .input-field {
+    margin-top: 2rem;
+  }
+}
+
+select.qtb-select-input {
+  &:focus {
+    outline: 1px solid $primary-color-light;
   }
 }
