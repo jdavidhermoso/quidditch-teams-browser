@@ -31,11 +31,29 @@
   display: none;
 }
 
+#manage_team_logo {
+  //left: -9999999px;
+}
+
+
+
 div.qtb-cropper-controls-btn {
   width: 100%;
   margin: 5px 0;
   background-color: $primary-color-dark;
   color: $white;
+
+  &#cropper_done {
+    background-color: $success;
+  }
+
+  &#cropper_clear {
+    background-color: $error;
+  }
+
+  &.qtb-cropper-controls-zoom {
+    background-color: #3AAACF;
+  }
 
   &:focus, &:hover {
     background-color: $primary-color-light;
@@ -46,7 +64,8 @@ div.qtb-cropper-controls-btn {
   }
 
   &.disabled {
-    background-color: $disabled;
+    background-color: $disabled!important;
   }
+
 }
 

@@ -15,12 +15,16 @@ app.MainView = Backbone.View.extend({
     }
   },
   initialize: function () {
+    var view = this;
   },
   render: function () {
   },
   showPage: function (page_id) {
-    this.hideAllPages();
-    $(this.ui.pages[page_id]).addClass(this.ui.pages.active);
+    $(page_id).addClass(this.ui.pages.active);
+    this.trigger('navigate', {
+      'from:': '',
+      'to': page_id
+    });
   },
   hideAllPages: function () {
     $(this.ui.pages.all).removeClass(this.ui.pages.active);

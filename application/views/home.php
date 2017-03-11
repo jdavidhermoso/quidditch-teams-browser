@@ -32,18 +32,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 </header>
 <div class="qtb-pages-container" id="qtb_pages_container">
   <div id="qtb-home-map"></div>
-  <div class="qtb-page qtb-active-page row" id="home">
+  <div class="qtb-page row" id="home">
     <div class="qtb-search-form-container col s12 m8 l8 offset-m2 offset-l2">
       <form class="qtb-search-form" id="search_form">
         <label class="qtb-search-label">
           Busca un equipo
         </label>
         <div class="qtb-search-input-container">
+          <!--<div class="qtb-search-aside-icon-container qtb-search-spinner-container">
+            <i class="material-icons qtb-spinner-icon qtb-hidden" id="search_spinner_container">loop</i>
+          </div> -->
           <input type="text" class="qtb-search-input" id="search_input" placeholder="Nombre, Província, Ciudad... "
                  autofocus/>
-          <div class="qtb-search-icon-container" id="search_button">
+          <!-- <div class="qtb-search-aside-icon-container qtb-search-icon-container" id="search_button">
             <i class="material-icons">search</i>
-          </div>
+          </div> -->
         </div>
       </form>
       <div class="qtb-search-input-results-list-container">
@@ -69,8 +72,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDFSyLDFSZpSIYjnqwKxFwoRxl6U9SVs5k"></script>
 <script src="<?php echo VENDORSPATH; ?>jquery/dist/jquery.min.js"></script>
 <script src="<?php echo VENDORSPATH; ?>underscore/underscore-min.js"></script>
-<script src="<?php echo VENDORSPATH; ?>backbone/backbone.js"></script>
-<script src="<?php echo VENDORSPATH; ?>materialize/dist/js/materialize.js"></script>
+<script src="<?php echo VENDORSPATH; ?>backbone/backbone-min.js"></script>
+<script src="<?php echo VENDORSPATH; ?>materialize/dist/js/materialize.min.js"></script>
 <script src="<?php echo VENDORSPATH; ?>cropperjs/dist/cropper.js"></script>
 <script src="<?php echo JSPATH; ?>router/main.router.js"></script>
 <script src="<?php echo JSPATH; ?>models/team.model.js"></script>

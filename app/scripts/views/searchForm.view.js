@@ -14,26 +14,35 @@ app.SearchFormView = Backbone.View.extend({
   },
 
   initialize: function() {
+    var view = this;
+
+    this.listenTo(app.mainView, 'navigate', function() {
+
+    });
+
+    app.teamsCollection.on('beforeFetch', function() {
+
+    });
 
   },
   render: function() {
   },
 
   renderSearchResultItem: function(teamModel) {
-    this.$el.find(this.ui.results_list).append(this.searchResultsListTpl(teamModel.attributes));
+    this.$(this.ui.results_list).append(this.searchResultsListTpl(teamModel.attributes));
   },
 
   showResultsList: function() {
-    this.$el.find(this.ui.results_list).removeClass();
+    this.$(this.ui.results_list).removeClass();
   },
 
   voidResultsList: function() {
-    this.$el.find(this.ui.results_list).empty();
+    this.$(this.ui.results_list).empty();
     app.teamsCollection.reset();
   },
 
   emptySearchInput: function() {
-    this.$el.find(this.ui.search_input).val('');
+    this.$(this.ui.search_input).val('');
   },
 
   performShortSearch: function() {
@@ -41,18 +50,22 @@ app.SearchFormView = Backbone.View.extend({
       view = this;
 
     if (searchString.length < 4) {
+      if (this.currentFetch) {
+        this.currentFetch.abort();
+      }
+
       view.voidResultsList();
       return;
     }
 
     this.setShortSearchURL();
-    app.teamsCollection.fetch({
+    this.currentFetch = app.teamsCollection.fetch({
       reset: true,
       data: {
         'str': searchString
       },
       success: function() {
-        view.$el.find(view.ui.results_list).empty();
+        view.$(view.ui.results_list).empty();
         app.teamsCollection.each(function (team) {
           view.renderSearchResultItem(team);
         }, this);
@@ -79,7 +92,7 @@ app.SearchFormView = Backbone.View.extend({
         'str': searchString
       },
       success: function() {
-        view.$el.find(view.ui.results_list).empty();
+        view.$(view.ui.results_list).empty();
         app.teamsCollection.each(function (team) {
           view.renderSearchResultItem(team);
         }, this);

@@ -21,6 +21,7 @@ app.TeamProfileView = Backbone.View.extend({
   },
   initialize: function (id) {
     var view = this;
+
     this.setTeamUrl(id);
     app.teamsCollection.fetch({
       reset: true,
@@ -32,12 +33,13 @@ app.TeamProfileView = Backbone.View.extend({
           view.renderTeamNotFound();
           return;
         }
-        app.teamsCollection.each(function (team) {
-          view.render(team);
-        }, this);
+
+        view.renderTeams(app.teamsCollection);
+
+        app.mainView.showPage(app.mainView.ui.pages.team_profile);
       },
       error: function () {
-        Materialize.toast('Algo no ha ido bien!', 3000);
+        //Materialize.toast('Algo no ha ido bien!', 3000);
       }
     });
   },
@@ -45,6 +47,12 @@ app.TeamProfileView = Backbone.View.extend({
   render: function (team) {
     var teamData = _.extend(team.toJSON(), {formatedEmail: this.renderEmailAddress(team.toJSON().email)});
     $(app.mainView.ui.pages.team_profile).html(this.$el.html(this.template(teamData)));
+  },
+
+  renderTeams: function(teams) {
+    teams.each(function (team) {
+      this.render(team);
+    }, this);
   },
 
   renderTeamNotFound: function () {

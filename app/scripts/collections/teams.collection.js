@@ -6,5 +6,9 @@ app.TeamsCollection = Backbone.Collection.extend({
     teamsGalleryURL: 'index.php/search/teams',
     saveTeamURL: 'index.php/search/manageTeam',
   },
+  fetch: function() {
+    this.trigger('beforeFetch');
+    return Backbone.Collection.prototype.fetch.apply(this, arguments);
+  },
   model: app.Team
 });

@@ -2,7 +2,7 @@ var app = app || {};
 
 app.QuidditchTeamsBrowserRouter = Backbone.Router.extend({
   routes: {
-    "(/)": "defaultRoute",
+    "(/)": "getHomePage",
     "teams(/)": "getTeamsGallery",
     "teams/:id(/)": "getTeamProfile",
     "add(/)": "manageTeamForm",
@@ -11,29 +11,34 @@ app.QuidditchTeamsBrowserRouter = Backbone.Router.extend({
   navigateToHome: function () {
     app.router.navigate('/', true);
   },
-  defaultRoute: function () {
-    app.mainView.showPage('home');
+  getHomePage: function () {
+    app.mainView.hideAllPages();
+    app.mainView.showPage(app.mainView.ui.pages.home);
   },
   getTeamsGallery: function () {
     this.navigateToHome();
   },
   getTeamProfile: function (id) {
+    app.mainView.hideAllPages();
     if (isNaN(id)) {
       this.navigateToHome();
       return;
     }
 
     app.teamProfile = new app.TeamProfileView(id);
-    app.mainView.showPage('team_profile');
   },
   manageTeamForm: function () {
+    app.mainView.hideAllPages();
     app.manageTeamModel = new app.Team();
     app.manageTeam = new app.ManageTeamView({
       model: app.manageTeamModel
     });
-    app.mainView.showPage('manage_team');
   },
   notFound: function () {
     this.navigateToHome();
+  },
+  getCurrentRoute: function() {
+    var route = Backbone.history.getFragment();
+    return (route.substr(0, route.indexOf('/')) == '') ? 'home' : route.substr(0, route.indexOf('/'));
   }
 });

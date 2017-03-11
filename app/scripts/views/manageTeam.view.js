@@ -1,40 +1,55 @@
 var app = app || {};
 app.ManageTeamView = Backbone.View.extend({
   el: '#manage_team',
-  selectTemplate: _.template($('#selectTemplate').html()),
-  cropLogoTemplate: _.template($('#cropperModalTemplate').html()),
-  logoPrevisualizeTemplate: _.template($('#manageTeamPrevisualizeTemplate').html()),
+  selectTemplate: _.template(this.$('#selectTemplate').html()),
+  cupsWonTemplate: _.template(this.$('#singleCupWonInputTemplate').html()),
+  logoPrevisualizeTemplate: _.template(this.$('#manageTeamPrevisualizeTemplate').html()),
   events: {
     'change #manage_team_province': 'getTownships',
-    'change #manage_team_logo': 'openCropper',
+    'change #manage_team_logo': 'setCropper',
     'click #cropper_zoom_plus': 'zoom_plus_cropper',
     'click #cropper_zoom_less': 'zoom_less_cropper',
     'click #cropper_rotate_right': 'rotate_right',
     'click #cropper_rotate_left': 'rotate_left',
-    'click #manage_team_submit': 'submitTeam'
+    'click #manage_team_submit': 'submitTeam',
+    'click #cropper_done': 'saveCrop',
+    'click #cropper_clear': 'discardCrop'
+
   },
   teamLogo: '',
   cropper: {},
   ui: {
+    'manageTeamFrom': '#manage_team_form',
     'provincesSelect': '#manage_team_province',
     'townshipsSelect': '#manage_team_township',
     'teamLogoSelector': '#manage_team_logo',
     'teamLogoPathSelector': '#manage_team_logo_path',
-    'cropLogoModal': '#manage_team_cropper_modal',
-    'cropLogoAcceptBtn': '#manage_team_crop_logo_accept_btn',
-    'cropLogoImage': '#manage_team_crop_modal_image',
     'teamLogoPrevisualizeContainer': '#manage_team_logo_previsualize_container',
+    'teamLogoPrevisualize': '#manage_team_logo_previsualize_image',
     'submitButton': '#manage_team_submit',
     'manage_team_name': '#manage_team_name',
-    'manage_team_email': '#manage_team_email'
+    'manage_team_email': '#manage_team_email',
+    'cropControls': '.qtb-cropper-controls-btn',
+    'cupsWonContainer': '#cups_won_container'
   },
   initialize: function () {
-    var view = this;
-    this.$el.on('click', this.ui.cropLogoAcceptBtn, function () {
-      view.renderPrevisualizeImage(view.cropper.getCroppedCanvas().toDataURL());
-      $(view.ui.cropLogoModal).modal('close');
-    });
+    app.mainView.showPage(app.mainView.ui.pages.manage_team);
+    this.setDefaultProvincesTownshipsSelectors();
+    this.renderCupsWonInput();
+  },
 
+  renderCupsWonInput: function () {
+    $(this.ui.cupsWonContainer).empty();
+    for (var i = 0, z = 5; i < z; i++) {
+      $(this.ui.cupsWonContainer).append(this.cupsWonTemplate({
+        won: true,
+        id: (i + 1)
+      }));
+    }
+  },
+
+  setDefaultProvincesTownshipsSelectors: function () {
+    var view = this;
     this.getProvinces().then(function (provinces) {
       return JSON.parse(provinces);
     }).catch(function () {
@@ -48,10 +63,6 @@ app.ManageTeamView = Backbone.View.extend({
     });
   },
 
-
-  render: function (team) {
-  },
-
   setSaveTeamUrl: function () {
     app.manageTeamModel.url = app.teamsCollection.urls.saveTeamURL;
   },
@@ -62,25 +73,23 @@ app.ManageTeamView = Backbone.View.extend({
 
   renderLogoCropperModal: function (image) {
     var view = this;
-    view.$el.append(this.cropLogoTemplate({image: image}));
-    $(this.ui.cropLogoModal).modal({
+    view.append(this.cropLogoTemplate({image: image}));
+    view.$(this.ui.cropLogoModal).modal({
       complete: function () {
-        $(view.ui.cropLogoModal).remove();
+        view.$(view.ui.cropLogoModal).remove();
         if (!view.teamLogo && !$(view.ui.teamLogoSelector)[0].files[0]) {
           view.teamLogo = $(view.ui.teamLogoSelector)[0].files[0];
         }
       }
     });
     $(this.ui.cropLogoModal).modal('open');
-    $(this.ui.cropLogoModal).addClass('qtb-manage-team-logo-cropper-modal');
   },
 
   renderProvincesSelector: function (provinces) {
-    var view = this;
-    $(view.ui.provincesSelect).empty();
+    this.$(this.ui.provincesSelect).empty();
 
     for (var i = 0, z = provinces.length; i < z; i++) {
-      $(view.ui.provincesSelect).append(view.renderSelectOption(provinces[i]));
+      this.$(this.ui.provincesSelect).append(this.renderSelectOption(provinces[i]));
     }
   },
 
@@ -96,8 +105,8 @@ app.ManageTeamView = Backbone.View.extend({
   },
 
   getTownships: function () {
-    var view = this,
-      province_id = $(view.ui.provincesSelect).find(':selected').val(),
+      var province_id = this.$(this.ui.provincesSelect).find(':selected').val(),
+        view = this,
 
       getProvincesRequest = $.ajax({
         type: 'get',
@@ -109,24 +118,20 @@ app.ManageTeamView = Backbone.View.extend({
 
     getProvincesRequest.then(function (response) {
       var townships = JSON.parse(response);
-      $(view.ui.townshipsSelect).empty();
+      view.$(view.ui.townshipsSelect).empty();
 
       for (var i = 0, z = townships.length; i < z; i++) {
-        $(view.ui.townshipsSelect).append(view.renderSelectOption(townships[i]));
+        view.$(view.ui.townshipsSelect).append(view.renderSelectOption(townships[i]));
       }
 
-      $(view.ui.townshipsSelect).val($(view.ui.townshipsSelect).find('option:first').val());
+      view.$(view.ui.townshipsSelect).val(view.$(view.ui.townshipsSelect).find('option:first').val());
 
     }, function () {
       Materialize.toast('¡El correo no ha podido ser enviado!', 3000);
     });
   },
 
-  setTeamURL: function () {
-    this.model.url = app.teamsCollection.urls.saveTeamURL;
-  },
-
-  openCropper: function (e) {
+  setCropper: function (e) {
     var view = this,
       file = e.target.files[0],
       imageLoaded = new Promise(function (resolve, reject) {
@@ -142,28 +147,33 @@ app.ManageTeamView = Backbone.View.extend({
       });
 
     imageLoaded.then(function (data) {
-      if (data.file.size > 1000000) {
+      if (data.file.size > 3000000) {
         data.view.maxFileSizeAlert();
         return;
       }
 
       data.view.renderPrevisualizeImage(data.reader.result);
 
-      return {image: data.reader.result, view: data.view};
-    }).then(function (data) {
-      data.view.renderLogoCropperModal(data.image, data.view);
-      return data.view;
-    }).then(function (view) {
-      view.cropper = new Cropper($(view.ui.cropLogoImage)[0], {
+      data.view.toggleCropControls(true);
+
+
+      data.view.cropper = new Cropper(data.view.$(data.view.ui.teamLogoPrevisualize)[0], {
         dragMode: 'move',
-        aspectRatio: 1 / 1,
-        cropBoxResizable: false
+        aspectRatio: 1,
+        cropBoxResizable: true
       });
+
+      return {image: data.reader.result, view: data.view};
     });
   },
 
+  toggleCropControls: function (stateToSet) {
+    this.$(this.ui.cropControls).toggleClass('disabled', !stateToSet);
+  },
+
+
   maxFileSizeAlert: function () {
-    Materialize.toast('Selected file is too big. Max. upload file is 1 MB', 3000);
+    Materialize.toast('Selected file is too big. Max. upload file is 3 MB', 3000);
     this.$(this.ui.teamLogoSelector).val('');
     this.$(this.ui.teamLogoPathSelector).val('');
   },
@@ -186,6 +196,7 @@ app.ManageTeamView = Backbone.View.extend({
 
   submitTeam: function (e) {
     e.preventDefault();
+    var view = this;
 
     if (!app.mainView.validateForm()) {
       Materialize.toast('¡Por favor, rellena correctamente el formulario de contacto!', 3000);
@@ -193,10 +204,10 @@ app.ManageTeamView = Backbone.View.extend({
     }
 
     var formData = {},
-      name = $(this.ui.manage_team_name).val(),
-      email = $(this.ui.manage_team_email).val(),
-      province = $(this.ui.provincesSelect).find(':selected').val(),
-      township = $(this.ui.townshipsSelect).find(':selected').val();
+      name = this.$(this.ui.manage_team_name).val(),
+      email = this.$(this.ui.manage_team_email).val(),
+      province = this.$(this.ui.provincesSelect).find(':selected').val(),
+      township = this.$(this.ui.townshipsSelect).find(':selected').val();
 
     if (this.teamLogo) {
       formData['logo'] = this.teamLogo;
@@ -213,11 +224,39 @@ app.ManageTeamView = Backbone.View.extend({
 
     this.model.save(formData, {
       success: function (model, response) {
+        view.resetManageTeamForm();
+        Materialize.toast('¡Equipo guardado correctamente!', 3000);
       },
       error: function (model, response) {
-        console.log(model);
+        Materialize.toast('¡Ha habido un error!', 3000);
       }
     });
+  },
+
+  saveCrop: function () {
+    this.renderPrevisualizeImage(this.cropper.getCroppedCanvas().toDataURL());
+    this.toggleCropControls(false);
+  },
+
+  resetManageTeamForm: function () {
+    this.$(this.ui.manageTeamFrom)[0].reset();
+
+    this.setDefaultProvincesTownshipsSelectors();
+
+    this.resetLogoInput();
+  },
+
+  resetLogoInput: function () {
+    this.$(this.ui.teamLogoPrevisualizeContainer).empty();
+    this.toggleCropControls(false);
+  },
+
+  discardCrop: function () {
+    this.resetLogoInput();
+  },
+
+  renderCupsWonCounter: function() {
+
   }
 
   /* if (!app.mainView.validateForm()) {
