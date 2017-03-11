@@ -2,31 +2,14 @@
 
 class Search_teams_model extends CI_Model
 {
-  public function shortSearch($search_strings = array())
+  public function shortSearch($str = array())
   {
 
-    $where = "";
-
-    foreach ($search_strings as $i => $str) {
-      if ($str != "" && $str != " " && $str != "quidditch" && $str != "team") {
-        $where .= " team.name LIKE '%" .$str. "%' ";
-        $where .= " OR p.name LIKE '%" . $str . "%'";
-        $where .= " OR t.name LIKE '%" . $str . "%'";
-      }
-
-      if ($i < count($search_strings) - 1) {
-        $where .= 'OR';
-      }
+    if ($str != "") {
+      $query = "SELECT team.id, team.name, team.logo, team.email, p.name as province, t.name as town FROM qtb_teams team LEFT JOIN townships t ON t.id = team.township LEFT JOIN provinces p ON p.id = t.province WHERE team.name LIKE '%" . $str . "%'  OR p.name LIKE '%" . $str . "%' OR t.name LIKE '%" . $str . "%' ORDER BY team.name ASC, p.name ASC, t.name ASC LIMIT 3";
+      $teamsQuery = $this->db->query($query);
+      return $teamsQuery->result();
     }
-
-    if ($where != "") {
-      $where = "WHERE ". $where . " AND active = 1";
-    }
-
-    $query = "SELECT team.id, team.name, team.logo, team.email, p.name as province, t.name as town FROM qtb_teams team LEFT JOIN townships t ON t.id = team.township LEFT JOIN provinces p ON p.id = t.province ".$where." ORDER BY team.name ASC, p.name ASC, t.name ASC LIMIT 3";
-
-    $teamsQuery = $this->db->query($query);
-    return $teamsQuery->result();
   }
 
   public function teamSearch($id = 0)

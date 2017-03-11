@@ -16,9 +16,11 @@ class Search extends CI_Controller
 
   public function short()
   {
+    $result = [];
     $str = explode("+", $this->input->get('str'));
     $forbidden_words = array('quidditch', 'team', '', ' ', 'equipo');
     $str = array_diff($str, $forbidden_words);
+    $str = implode(" ", $str);
     $result = $this->Search_teams_model->shortSearch($str);
     echo json_encode($result);
     die();
