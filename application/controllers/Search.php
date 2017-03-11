@@ -16,7 +16,9 @@ class Search extends CI_Controller
 
   public function short()
   {
-    $str = explode(" ", $this->input->get('str'));
+    $str = explode("+", $this->input->get('str'));
+    $forbidden_words = array('quidditch', 'team', '', ' ', 'equipo');
+    $str = array_diff($str, $forbidden_words);
     $result = $this->Search_teams_model->shortSearch($str);
     echo json_encode($result);
     die();
@@ -86,7 +88,8 @@ class Search extends CI_Controller
 
   }
 
-  private function addNewTeam() {
+  private function addNewTeam()
+  {
     $post_params = $this->get_post();
     $name = $post_params['name'];
     $email = $post_params['email'];
@@ -111,7 +114,8 @@ class Search extends CI_Controller
     return strtolower($this->input->server('REQUEST_METHOD'));
   }
 
-  private function get_post() {
+  private function get_post()
+  {
     $rest_json = file_get_contents("php://input");
     return json_decode($rest_json, true);
   }
