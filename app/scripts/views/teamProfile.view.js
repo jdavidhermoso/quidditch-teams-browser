@@ -5,7 +5,8 @@ app.TeamProfileView = Backbone.View.extend({
   template: _.template($('#teamProfileTemplate').html()),
   teamNotFoundTemplate: _.template($('#teamNotFoundTemplate').html()),
   events: {
-    'click #contact_team': 'sendEmail'
+    'click #contact_team': 'sendEmail',
+    'click #edit_team': 'editTeam'
   },
   ui: {
     pages: {
@@ -15,8 +16,9 @@ app.TeamProfileView = Backbone.View.extend({
     },
     'contact_form': '#contact_form',
     'from_email': '#contact_from_email',
+    'edit_team': '#edit_team',
     'contact_subject': '#contact_subject',
-    'contact_message': '#contact_message'
+    'contact_message': '#contact_message',
 
   },
   initialize: function (id) {
@@ -47,9 +49,10 @@ app.TeamProfileView = Backbone.View.extend({
   render: function (team) {
     var teamData = _.extend(team.toJSON(), {formatedEmail: this.renderEmailAddress(team.toJSON().email)});
     $(app.mainView.ui.pages.team_profile).html(this.$el.html(this.template(teamData)));
+    app.mainView.toggleSpinner(false);
   },
 
-  renderTeams: function(teams) {
+  renderTeams: function (teams) {
     teams.each(function (team) {
       this.render(team);
     }, this);
@@ -89,10 +92,10 @@ app.TeamProfileView = Backbone.View.extend({
       type: 'POST',
       url: 'index.php/search/sendEmail',
       data: {
-        id: 1,
-        from: 'aaa@gmail.com',
-        subject: 'test',
-        message: 'kasdfbnsdkm'
+        id: 4,
+        from: this.$(this.ui.from_email).val(),
+        subject: this.$(this.ui.contact_subject).val(),
+        message: this.$(this.ui.contact_message).val()
       }
     });
 
@@ -107,5 +110,10 @@ app.TeamProfileView = Backbone.View.extend({
     }, function () {
       Materialize.toast('¡El correo no ha podido ser enviado!', 3000);
     });
+  },
+
+  editTeam: function () {
+    var id = app.teamsCollection.models[0].get('id');
+    app.router.navigateToManageTeam(id);
   }
 });

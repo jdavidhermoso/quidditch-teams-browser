@@ -13,6 +13,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   <link rel="stylesheet" href="<?php echo VENDORSPATH; ?>cropperjs/dist/cropper.css">
 </head>
 <body>
+<div class="qtb-loading-background qtb-hidden" id="spinner_image">
+  <div class="qtb-spinner-container">
+    <img src="dist/images/spinner.svg" class="qtb-spinner-image">
+  </div>
+</div>
 <header class="qtb-header" id="header">
   <nav class="qtb-nav">
     <a href="#" class="brand-logo center">

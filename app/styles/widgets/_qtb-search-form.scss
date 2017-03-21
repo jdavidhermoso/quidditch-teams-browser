@@ -126,6 +126,9 @@
     background: #FFFFFF;
     height: 46px;
     line-height: 46px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     &:hover {
       cursor: pointer;
       background-color: $home-bg-search-results-list-hover;

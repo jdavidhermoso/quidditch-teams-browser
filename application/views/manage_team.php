@@ -1,17 +1,30 @@
-<div class="col s12 qtb-manage-team-container">
+<div class="col s12 qtb-manage-team-container"></div>
+<script id="manageTeamTemplate" type="text/template">
   <form id="manage_team_form">
     <div class="qtb-manage-team-fields-container">
       <div class="input-field col s12 m6 l6">
-        <label for="manage_team_name">
+        <%
+          var name_active = '';
+          if (name) {
+            name_active = 'active';
+          }
+        %>
+        <label for="manage_team_name" class="<%= name_active %>" >
           Nombre
         </label>
-        <input type="text" id="manage_team_name" class="qtb-text-field" maxlength="100" required/>
+        <input type="text" id="manage_team_name" class="qtb-text-field" maxlength="100" value="<%= name %>" required/>
       </div>
       <div class="input-field col s12 m6 l6">
-        <label for="manage_team_email">
+        <%
+          var email_active = '';
+          if (email) {
+          email_active = 'active';
+          }
+        %>
+        <label for="manage_team_email" class="<%= email_active %>">
           E-mail
         </label>
-        <input type="email" id="manage_team_email" class="qtb-email-field"/>
+        <input type="email" id="manage_team_email" class="qtb-email-field" value="<%= email %>"/>
       </div>
       <div class="col s12 m6 l6">
         <label>Província</label>
@@ -41,10 +54,12 @@
                    type="text">
           </div>
           <div class="qtb-cropper-zoom-controls-container">
-            <div class="qtb-cropper-controls-btn qtb-cropper-controls-zoom btn btn-default col s6 disabled" id="cropper_zoom_less">
+            <div class="qtb-cropper-controls-btn qtb-cropper-controls-zoom btn btn-default col s6 disabled"
+                 id="cropper_zoom_less">
               <i class="material-icons">remove_circle_outline</i>
             </div>
-            <div class="qtb-cropper-controls-btn qtb-cropper-controls-zoom btn btn-default col s6 disabled" id="cropper_zoom_plus">
+            <div class="qtb-cropper-controls-btn qtb-cropper-controls-zoom btn btn-default col s6 disabled"
+                 id="cropper_zoom_plus">
               <i class="material-icons">add_circle_outline</i>
             </div>
           </div>
@@ -87,10 +102,11 @@
       </div>
     </div>
   </form>
-</div>
+</script>
+
 
 <script id="selectTemplate" type="text/template">
-  <option value="<%= id %>"> <%= name %></option>
+  <option value="<%= id %>" > <%= name %></option>
 </script>
 
 <script id="manageTeamPrevisualizeTemplate" type="text/template">
@@ -103,7 +119,7 @@
     <div class="qtb-cup-won cup_won_icon_container" data-id="<%= id %>">
       <i class="material-icons">star_rate</i>
     </div>
-    <input type="text" class="qtb-cup-won-year-input" id="cup_won_year_input" placeholder="2016" maxlength="4" />
+    <input type="text" class="qtb-cup-won-year-input" id="cup_won_year_input" placeholder="2016" maxlength="4"/>
   </div>
 </script>
 

@@ -5,6 +5,8 @@ app.Team = Backbone.Model.extend({
     name: '',
     province: '',
     township: '',
+    provinceId: '',
+    townshipId: '',
     email: '',
     since: ''
   }

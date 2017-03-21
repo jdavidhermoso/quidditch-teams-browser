@@ -23,9 +23,14 @@
       </li>
     </ul>
   </div>
+  <div class="qtb-team-profile-controls-container col s12 m12 l12">
+    <div class="qtb-team-profile-controls-btn btn btn-default col s3 right" id="edit_team">
+      Editar
+    </div>
+  </div>
 
-  <% if (formatedEmail) { %>
-  <div class="qtb-team-profile-contact-form-container col s12">
+  <!-- <% if (formatedEmail) { %> -->
+ <!-- <div class="qtb-team-profile-contact-form-container col s12">
     <form id="contact_form">
       <div class="qtb-disclaimer qtb-team-profile-contact-form-disclaimer">
         <span> ATENCIÓN: </span> No almacenamos ninguna de la información que introduzcas en éste formulario.
@@ -59,5 +64,5 @@
     </form>
   </div>
 
-  <% } %>
+  <% } %> -->
 </script>

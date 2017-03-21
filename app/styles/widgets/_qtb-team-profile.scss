@@ -41,3 +41,11 @@ li.qtb-team-profile-name {
 
   }
 }
+
+.qtb-team-profile-controls-btn {
+  &#edit_team {
+    background: $team-profile-edit-btn;
+    cursor: pointer;
+    color: $primary-color-light;
+  }
+}

@@ -6,10 +6,18 @@ app.QuidditchTeamsBrowserRouter = Backbone.Router.extend({
     "teams(/)": "getTeamsGallery",
     "teams/:id(/)": "getTeamProfile",
     "add(/)": "manageTeamForm",
+    "editTeam/:id(/)": "manageTeamForm",
     ":whatever": "notFound"
   },
   navigateToHome: function () {
+    app.mainView.toggleSpinner(true);
     app.router.navigate('/', true);
+  },
+  navigateToManageTeam: function (id) {
+    app.router.navigate('editTeam/' + id, true);
+  },
+  navigateToTeamProfile: function (id) {
+    app.router.navigate('teams/' + id, true);
   },
   getHomePage: function () {
     app.mainView.hideAllPages();
@@ -19,25 +27,38 @@ app.QuidditchTeamsBrowserRouter = Backbone.Router.extend({
     this.navigateToHome();
   },
   getTeamProfile: function (id) {
+    app.mainView.toggleSpinner(true);
     app.mainView.hideAllPages();
     if (isNaN(id)) {
       this.navigateToHome();
       return;
     }
 
+    if (app.teamProfile) {
+      app.teamProfile.undelegateEvents();
+    }
     app.teamProfile = new app.TeamProfileView(id);
   },
-  manageTeamForm: function () {
+  manageTeamForm: function (id) {
+    app.mainView.toggleSpinner(true);
     app.mainView.hideAllPages();
-    app.manageTeamModel = new app.Team();
+    var teamModel = new app.Team();
+    teamModel.set('id', id);
+
+    if (app.manageTeam) {
+      app.manageTeam.undelegateEvents();
+    }
+
+    $('.qtb-manage-team-container').empty();
+
     app.manageTeam = new app.ManageTeamView({
-      model: app.manageTeamModel
+      model: teamModel
     });
   },
   notFound: function () {
     this.navigateToHome();
   },
-  getCurrentRoute: function() {
+  getCurrentRoute: function () {
     var route = Backbone.history.getFragment();
     return (route.substr(0, route.indexOf('/')) == '') ? 'home' : route.substr(0, route.indexOf('/'));
   }

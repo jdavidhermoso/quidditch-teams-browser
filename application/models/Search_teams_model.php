@@ -6,7 +6,8 @@ class Search_teams_model extends CI_Model
   {
 
     if ($str != "") {
-      $query = "SELECT team.id, team.name, team.logo, team.email, p.name as province, t.name as township FROM qtb_teams team LEFT JOIN townships t ON t.id = team.township LEFT JOIN provinces p ON p.id = t.province WHERE team.name LIKE '%" . $str . "%'  OR p.name LIKE '%" . $str . "%' OR t.name LIKE '%" . $str . "%' ORDER BY team.name ASC, p.name ASC, t.name ASC LIMIT 3";
+      $query = "SELECT team.id, team.name, team.logo, team.email, p.name as province, t.name as township FROM qtb_teams team LEFT JOIN townships t ON t.id = team.township LEFT JOIN provinces p ON p.id = t.province WHERE (team.name LIKE '%" . $str . "%'  OR p.name LIKE '%" . $str . "%' OR t.name LIKE '%" . $str . "%') and team.active = 1 ORDER BY team.name ASC, p.name ASC, t.name ASC LIMIT 3";
+
       $teamsQuery = $this->db->query($query);
       return $teamsQuery->result();
     }
@@ -14,7 +15,7 @@ class Search_teams_model extends CI_Model
 
   public function teamSearch($id = 0)
   {
-    $query = "SELECT team.id, team.name, team.logo, team.email, p.name as province, t.name as township FROM qtb_teams team LEFT JOIN townships t ON t.id = team.township LEFT JOIN provinces p ON p.id = t.province WHERE team.id = " . $id . " AND active = 1 ORDER BY team.name ASC, p.name ASC, t.name ASC LIMIT 1";
+    $query = "SELECT team.id, team.name, team.logo, team.email, p.name as province, t.name as township, p.id as province_id, t.id as township_id FROM qtb_teams team LEFT JOIN townships t ON t.id = team.township LEFT JOIN provinces p ON p.id = t.province WHERE team.id = " . $id . " AND active = 1 ORDER BY team.name ASC, p.name ASC, t.name ASC LIMIT 1";
 
     return $this->db->query($query)->result();
   }
@@ -59,7 +60,17 @@ class Search_teams_model extends CI_Model
   {
     date_default_timezone_set('Europe/Madrid');
     $registerDate = date('Ymd');
-    return $this->db->query("INSERT INTO qtb_teams (name, email, township, logo, registerdate, active) VALUES ('$name', '$email', '$township', '$logo', '$registerDate', 1)");
+    $this->db->query("INSERT INTO qtb_teams (name, email, township, logo, registerdate, active) VALUES ('$name', '$email', '$township', '$logo', '$registerDate', 1)");
+
+    return $this->db->insert_id();
+  }
+
+  public function editTeam($id = 0, $name = '', $email = '', $township = 0, $logo = '')
+  {
+    date_default_timezone_set('Europe/Madrid');
+    $registerDate = date('Ymd');
+
+    return $this->db->query("UPDATE qtb_teams SET name='$name',township=$township,logo='$logo',registerdate='$registerDate',email='$email' WHERE id = $id");
   }
 
 }

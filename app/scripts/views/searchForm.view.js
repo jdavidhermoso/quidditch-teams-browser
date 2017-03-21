@@ -15,15 +15,7 @@ app.SearchFormView = Backbone.View.extend({
 
   initialize: function() {
     var view = this;
-
-    this.listenTo(app.mainView, 'navigate', function() {
-
-    });
-
-    app.teamsCollection.on('beforeFetch', function() {
-
-    });
-
+    app.mainView.toggleSpinner(false);
   },
   render: function() {
   },
@@ -58,6 +50,8 @@ app.SearchFormView = Backbone.View.extend({
       return;
     }
 
+    app.mainView.toggleSpinner(true);
+
     this.setShortSearchURL();
     this.currentFetch = app.teamsCollection.fetch({
       reset: true,
@@ -66,12 +60,14 @@ app.SearchFormView = Backbone.View.extend({
       },
       success: function() {
         view.$(view.ui.results_list).empty();
+        app.mainView.toggleSpinner(false);
         app.teamsCollection.each(function (team) {
           view.renderSearchResultItem(team);
         }, this);
       },
       error: function() {
-        Materialize.toast('Algo no ha ido bien!', 3000);
+        view.$(view.ui.results_list).empty();
+        app.mainView.toggleSpinner(false);
       }
     });
   },

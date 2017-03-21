@@ -2,10 +2,12 @@ var app = app || {};
 app.ManageTeamView = Backbone.View.extend({
   el: '#manage_team',
   selectTemplate: _.template(this.$('#selectTemplate').html()),
+  formTemplate: _.template(this.$('#manageTeamTemplate').html()),
   cupsWonTemplate: _.template(this.$('#singleCupWonInputTemplate').html()),
   logoPrevisualizeTemplate: _.template(this.$('#manageTeamPrevisualizeTemplate').html()),
+  defaultProvince: 15,
+  defaultTownship: 1,
   events: {
-    'change #manage_team_province': 'getTownships',
     'change #manage_team_logo': 'setCropper',
     'click #cropper_zoom_plus': 'zoom_plus_cropper',
     'click #cropper_zoom_less': 'zoom_less_cropper',
@@ -30,12 +32,64 @@ app.ManageTeamView = Backbone.View.extend({
     'manage_team_name': '#manage_team_name',
     'manage_team_email': '#manage_team_email',
     'cropControls': '.qtb-cropper-controls-btn',
-    'cupsWonContainer': '#cups_won_container'
+    'cupsWonContainer': '#cups_won_container',
+    'container': '.qtb-manage-team-container'
   },
   initialize: function () {
+    var view = this;
+    //TODO: Refactor to Backbone style
+    this.$el.on('change', this.ui.provincesSelect, function (e) {
+      view.getTownships($(e.target).find(':selected').val()).then(function (townships) {
+        view.renderTownshipsSelector(townships);
+      });
+    });
+
+    if (this.model.get('id')) {
+
+      this.getTeamData(this.model.get('id'));
+
+    } else {
+
+      this.renderAddForm();
+
+    }
+
     app.mainView.showPage(app.mainView.ui.pages.manage_team);
-    this.setDefaultProvincesTownshipsSelectors();
-    this.renderCupsWonInput();
+  },
+
+  getTeamData: function (teamId) {
+    var view = this;
+    this.setSyncURL();
+    this.model.fetch({
+      reset: true,
+      data: {
+        id: teamId
+      },
+      success: function () {
+        if (!view.model.get('id')) {
+          view.renderTeamNotFound();
+          return;
+        }
+
+        view.renderEditForm();
+      },
+      error: function () {
+        //Materialize.toast('Algo no ha ido bien!', 3000);
+      }
+    });
+  },
+
+  renderAddForm: function () {
+    this.$(this.ui.container).html(this.formTemplate(this.model.toJSON()));
+    this.setDefaultProvinceAndTownship();
+    app.mainView.toggleSpinner(false);
+  },
+
+  renderEditForm: function () {
+    this.$(this.ui.container).html(this.formTemplate(this.model.toJSON()));
+    this.setTeamProvinceAndTownship();
+    this.renderPrevisualizeImage(this.model.get('logo'));
+    app.mainView.toggleSpinner(false);
   },
 
   renderCupsWonInput: function () {
@@ -48,23 +102,62 @@ app.ManageTeamView = Backbone.View.extend({
     }
   },
 
-  setDefaultProvincesTownshipsSelectors: function () {
+  setDefaultProvinceAndTownship: function () {
     var view = this;
+
     this.getProvinces().then(function (provinces) {
-      return JSON.parse(provinces);
-    }).catch(function () {
-      Materialize.toast('¡Ha habido un error!', 3000);
-    }).then(function (provinces) {
       view.renderProvincesSelector(provinces);
-    }).then(function () {
-      view.getTownships();
-    }).catch(function () {
-      Materialize.toast('¡Ha habido un error!', 3000);
+      return view.getTownships(view.defaultProvince);
+    }, function () {
+      //Todo: Toast error
+    }).then(function (townships) {
+      view.renderTownshipsSelector(townships);
+    }, function () {
+      //Todo: Toast error
     });
   },
 
+  renderProvincesSelector: function (provinces) {
+    var provinces = JSON.parse(provinces);
+
+    this.$(this.ui.provincesSelect).empty();
+    for (var i = 0, z = provinces.length; i < z; i++) {
+      this.$(this.ui.provincesSelect).append(this.renderSelectOption(provinces[i]));
+    }
+
+    this.$(this.ui.provincesSelect + ' option[value=' + this.model.get('province_id') + ']').attr('selected', 'selected');
+  },
+
+  renderTownshipsSelector: function (townships) {
+    var townships = JSON.parse(townships);
+
+    this.$(this.ui.townshipsSelect).empty();
+    for (var i = 0, z = townships.length; i < z; i++) {
+      this.$(this.ui.townshipsSelect).append(this.renderSelectOption(townships[i]));
+    }
+    this.$(this.ui.townshipsSelect + ' option[value=' + this.model.get('township_id') + ']').attr('selected', 'selected');
+  },
+
+  setTeamProvinceAndTownship: function () {
+    var view = this;
+    this.getProvinces().then(function (provinces) {
+      view.renderProvincesSelector(provinces);
+      return view.getTownships(view.model.get('province_id'));
+    }, function () {
+      //Todo: Toast error
+    }).then(function (townships) {
+      view.renderTownshipsSelector(townships);
+    }, function () {
+      //Todo: Toast error
+    });
+  },
+
+  setSyncURL: function () {
+    this.model.url = app.teamsCollection.urls.teamURL;
+  },
+
   setSaveTeamUrl: function () {
-    app.manageTeamModel.url = app.teamsCollection.urls.saveTeamURL;
+    this.model.url = app.teamsCollection.urls.saveTeamURL;
   },
 
   renderSelectOption: function (province) {
@@ -85,18 +178,11 @@ app.ManageTeamView = Backbone.View.extend({
     $(this.ui.cropLogoModal).modal('open');
   },
 
-  renderProvincesSelector: function (provinces) {
-    this.$(this.ui.provincesSelect).empty();
-
-    for (var i = 0, z = provinces.length; i < z; i++) {
-      this.$(this.ui.provincesSelect).append(this.renderSelectOption(provinces[i]));
-    }
-  },
-
   renderPrevisualizeImage: function (src) {
     this.$(this.ui.teamLogoPrevisualizeContainer).html(this.logoPrevisualizeTemplate({src: src}));
     this.teamLogo = src;
   },
+
   getProvinces: function () {
     return $.ajax({
       type: 'get',
@@ -104,34 +190,18 @@ app.ManageTeamView = Backbone.View.extend({
     });
   },
 
-  getTownships: function () {
-      var province_id = this.$(this.ui.provincesSelect).find(':selected').val(),
-        view = this,
-
-      getProvincesRequest = $.ajax({
-        type: 'get',
-        url: 'index.php/search/getTownships',
-        data: {
-          province_id: province_id
-        }
-      });
-
-    getProvincesRequest.then(function (response) {
-      var townships = JSON.parse(response);
-      view.$(view.ui.townshipsSelect).empty();
-
-      for (var i = 0, z = townships.length; i < z; i++) {
-        view.$(view.ui.townshipsSelect).append(view.renderSelectOption(townships[i]));
+  getTownships: function (province_id) {
+    return $.ajax({
+      type: 'get',
+      url: 'index.php/search/getTownships',
+      data: {
+        province_id: province_id
       }
-
-      view.$(view.ui.townshipsSelect).val(view.$(view.ui.townshipsSelect).find('option:first').val());
-
-    }, function () {
-      Materialize.toast('¡El correo no ha podido ser enviado!', 3000);
     });
   },
 
   setCropper: function (e) {
+    app.mainView.toggleSpinner(true);
     var view = this,
       file = e.target.files[0],
       imageLoaded = new Promise(function (resolve, reject) {
@@ -139,6 +209,7 @@ app.ManageTeamView = Backbone.View.extend({
         if (file) {
           reader = new FileReader();
           reader.onloadend = function () {
+            app.mainView.toggleSpinner(false);
             resolve({reader: reader, file: file, view: view});
           };
 
@@ -147,7 +218,7 @@ app.ManageTeamView = Backbone.View.extend({
       });
 
     imageLoaded.then(function (data) {
-      if (data.file.size > 3000000) {
+      if (data.file.size > 1000000) {
         data.view.maxFileSizeAlert();
         return;
       }
@@ -173,7 +244,7 @@ app.ManageTeamView = Backbone.View.extend({
 
 
   maxFileSizeAlert: function () {
-    Materialize.toast('Selected file is too big. Max. upload file is 3 MB', 3000);
+    Materialize.toast('Selected file is too big. Max. upload file is 1 MB', 3000);
     this.$(this.ui.teamLogoSelector).val('');
     this.$(this.ui.teamLogoPathSelector).val('');
   },
@@ -198,7 +269,10 @@ app.ManageTeamView = Backbone.View.extend({
     e.preventDefault();
     var view = this;
 
+    app.mainView.toggleSpinner(true);
+
     if (!app.mainView.validateForm()) {
+      app.mainView.toggleSpinner(false);
       Materialize.toast('¡Por favor, rellena correctamente el formulario de contacto!', 3000);
       return;
     }
@@ -206,8 +280,8 @@ app.ManageTeamView = Backbone.View.extend({
     var formData = {},
       name = this.$(this.ui.manage_team_name).val(),
       email = this.$(this.ui.manage_team_email).val(),
-      province = this.$(this.ui.provincesSelect).find(':selected').val(),
-      township = this.$(this.ui.townshipsSelect).find(':selected').val();
+      province_id = this.$(this.ui.provincesSelect).find(':selected').val(),
+      township_id = this.$(this.ui.townshipsSelect).find(':selected').val();
 
     if (this.teamLogo) {
       formData['logo'] = this.teamLogo;
@@ -215,33 +289,38 @@ app.ManageTeamView = Backbone.View.extend({
 
     formData['name'] = name;
     formData['email'] = email;
-    formData['province'] = province;
-    formData['township'] = township;
+    formData['province_id'] = province_id;
+    formData['township_id'] = township_id;
 
     this.model.set(formData);
 
     this.setSaveTeamUrl();
 
     this.model.save(formData, {
-      success: function (model, response) {
-        view.resetManageTeamForm();
+      success: function () {
+        app.router.navigateToTeamProfile(view.model.get('id'));
+
+        app.mainView.toggleSpinner(false);
+
         Materialize.toast('¡Equipo guardado correctamente!', 3000);
       },
-      error: function (model, response) {
-        Materialize.toast('¡Ha habido un error!', 3000);
+      error: function () {
+        Materialize.toast('¡Error guardando equipo!', 3000);
       }
     });
   },
 
   saveCrop: function () {
+    app.mainView.toggleSpinner(true);
     this.renderPrevisualizeImage(this.cropper.getCroppedCanvas().toDataURL());
     this.toggleCropControls(false);
+    app.mainView.toggleSpinner(false);
   },
 
   resetManageTeamForm: function () {
     this.$(this.ui.manageTeamFrom)[0].reset();
 
-    this.setDefaultProvincesTownshipsSelectors();
+    //this.setDefaultProvincesTownshipsSelectors();
 
     this.resetLogoInput();
   },
@@ -255,7 +334,7 @@ app.ManageTeamView = Backbone.View.extend({
     this.resetLogoInput();
   },
 
-  renderCupsWonCounter: function() {
+  renderCupsWonCounter: function () {
 
   }
 

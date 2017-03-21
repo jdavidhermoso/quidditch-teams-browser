@@ -12,10 +12,10 @@ app.MainView = Backbone.View.extend({
       'home': '#home',
       'team_profile': '#team_profile',
       'manage_team' : '#manage_team'
-    }
+    },
+    'spinner' : '#spinner_image'
   },
   initialize: function () {
-    var view = this;
   },
   render: function () {
   },
@@ -62,5 +62,8 @@ app.MainView = Backbone.View.extend({
   capitalizeEmail: function (e) {
     var email = $(e.target).val();
     $(e.target).val(email.toLowerCase());
+  },
+  toggleSpinner: function (showOrNot) {
+    showOrNot ? $(this.ui.spinner).removeClass('qtb-hidden') : $(this.ui.spinner).addClass('qtb-hidden');
   }
 });

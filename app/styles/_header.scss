@@ -25,7 +25,9 @@
     font-size: 14px;
     height: $header_height;
     img {
-      height: 100%;
+      max-width: 100%;
+      max-height: 100%;
+      vertical-align: middle;
     }
   }
 }
