@@ -244,6 +244,9 @@ switch (ENVIRONMENT)
   // Path to javascript
   define('JSPATH', STATICPATH.'scripts'.DIRECTORY_SEPARATOR);
 
+  // Path to lang files
+  define('LANGPATH', STATICPATH.'lang'.DIRECTORY_SEPARATOR);
+
   // Path to css
   define('CSSPATH', STATICPATH.'styles'.DIRECTORY_SEPARATOR);
 

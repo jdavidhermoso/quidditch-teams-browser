@@ -148,3 +148,46 @@
     }
   }
 }
+
+.qtb-last-teams-list-wrapper {
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+//TODO: Hacerlo bien
+.qtb-home-last-team {
+
+  &:hover {
+    cursor: pointer;
+    background-color: $home-bg-search-results-list-hover;
+  }
+
+  span {
+    padding: 20px 0px;
+  }
+  a {
+    text-decoration: none;
+    color: #000000;
+  }
+
+  &:last-child {
+    border-bottom-left-radius: 2px;
+    border-bottom-right-radius: 2px;
+  }
+}
+
+.qtb-last-teams-title {
+  display: block;
+  font-size: 25px;
+  text-align: center;
+  color: $primary-color-dark;
+}
+
+.qtb-home-last-team-logo {
+  max-height: 34px;
+  vertical-align: middle;
+  margin: 0 10px;
+}
+
+.qtb-last-teams-container {
+  margin-top: 25px;
+}

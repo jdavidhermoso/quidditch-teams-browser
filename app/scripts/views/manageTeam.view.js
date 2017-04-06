@@ -1,10 +1,19 @@
 var app = app || {};
 app.ManageTeamView = Backbone.View.extend({
+  mapOptions: {
+    center: {
+      //Madrid
+      lat: 40.415363, lng: -3.707398
+    },
+    zoom: 5
+  },
+  markers: [],
   el: '#manage_team',
   selectTemplate: _.template(this.$('#selectTemplate').html()),
   formTemplate: _.template(this.$('#manageTeamTemplate').html()),
   cupsWonTemplate: _.template(this.$('#singleCupWonInputTemplate').html()),
   logoPrevisualizeTemplate: _.template(this.$('#manageTeamPrevisualizeTemplate').html()),
+  trainingDayTimeOptionTemplate: _.template(this.$('#trainingDayTimeOptionTemplate').html()),
   defaultProvince: 15,
   defaultTownship: 1,
   events: {
@@ -33,7 +42,10 @@ app.ManageTeamView = Backbone.View.extend({
     'manage_team_email': '#manage_team_email',
     'cropControls': '.qtb-cropper-controls-btn',
     'cupsWonContainer': '#cups_won_container',
-    'container': '.qtb-manage-team-container'
+    'container': '.qtb-manage-team-container',
+    'trainingDaysSelector': '.manage_team_training_day',
+    'trainingTimesSelector': '.manage_team_training_time',
+    'map': '#manage_team_map'
   },
   initialize: function () {
     var view = this;
@@ -45,16 +57,10 @@ app.ManageTeamView = Backbone.View.extend({
     });
 
     if (this.model.get('id')) {
-
       this.getTeamData(this.model.get('id'));
-
     } else {
-
       this.renderAddForm();
-
     }
-
-    app.mainView.showPage(app.mainView.ui.pages.manage_team);
   },
 
   getTeamData: function (teamId) {
@@ -83,13 +89,71 @@ app.ManageTeamView = Backbone.View.extend({
     this.$(this.ui.container).html(this.formTemplate(this.model.toJSON()));
     this.setDefaultProvinceAndTownship();
     app.mainView.toggleSpinner(false);
+    app.mainView.showPage(app.mainView.ui.pages.manage_team);
+    //this.renderTrainingDays();
+    this.initMap();
   },
 
   renderEditForm: function () {
     this.$(this.ui.container).html(this.formTemplate(this.model.toJSON()));
     this.setTeamProvinceAndTownship();
-    this.renderPrevisualizeImage(this.model.get('logo'));
+    this.renderTeamLogo(this.model.get('logo'));
+    //this.renderPrevisualizeImage(this.model.get('logo'));
     app.mainView.toggleSpinner(false);
+    app.mainView.showPage(app.mainView.ui.pages.manage_team);
+    this.initMap();
+
+    if (parseFloat(this.model.get('lat')) != 0.00 && parseFloat(this.model.get('lng')) != 0.00) {
+      this.addMarker({
+        lat: parseFloat(this.model.get('lat')),
+        lng: parseFloat(this.model.get('lng'))
+      }, this.map);
+
+      this.map.setCenter({
+        lat: parseFloat(this.model.get('lat')),
+        lng: parseFloat(this.model.get('lng'))
+      });
+
+      this.map.setZoom(15);
+    }
+  },
+
+  initMap: function () {
+    var view = this;
+    this.map = new google.maps.Map($(this.ui.map)[0], this.mapOptions);
+    var searchInput = document.getElementById('qtb-search-input'),
+      searchBox = new google.maps.places.SearchBox(searchInput);
+    this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(searchInput);
+
+    searchBox.addListener('places_changed', function () {
+      var places = searchBox.getPlaces();
+
+      if (places.length == 0) {
+        return;
+      }
+
+      view.markers.forEach(function (marker) {
+        marker.setMap(null);
+      });
+      view.markers = [];
+
+      var bounds = new google.maps.LatLngBounds();
+      places.forEach(function (place) {
+        if (place.geometry.viewport) {
+          bounds.union(place.geometry.viewport);
+        } else {
+          bounds.extend(place.geometry.location);
+        }
+      });
+
+      view.map.fitBounds(bounds);
+    });
+
+    google.maps.event.addListener(view.map, 'click', function (event) {
+      view.deleteMarkers();
+      view.addMarker(event.latLng, view.map);
+      view.getMarkerData();
+    });
   },
 
   renderCupsWonInput: function () {
@@ -99,6 +163,31 @@ app.ManageTeamView = Backbone.View.extend({
         won: true,
         id: (i + 1)
       }));
+    }
+  },
+
+  renderTrainingDays: function () {
+    var days = ['LUNES', 'MARTES', 'MIERCOLES', 'JUEVES', 'VIERNES', 'SÁBADO', 'DOMINGO'];
+    this.$(this.ui.trainingDaysSelector).empty();
+    //TODO: Pass days array for templatize
+    for (var i = 0, z = days.length; i < z; i++) {
+      this.$(this.ui.trainingDaysSelector).append(this.trainingDayTimeOptionTemplate(
+        {
+          value: i,
+          word: days[i]
+        }
+      ));
+    }
+  },
+
+  renderTrainingTimes: function () {
+    var i = 700;
+    while (i < 2201) {
+      if (i.toString().slice(-2) == '00' || i.toString().slice(-2) == '30') {
+        console.log(i);
+      }
+
+      i += 30;
     }
   },
 
@@ -179,7 +268,18 @@ app.ManageTeamView = Backbone.View.extend({
   },
 
   renderPrevisualizeImage: function (src) {
-    this.$(this.ui.teamLogoPrevisualizeContainer).html(this.logoPrevisualizeTemplate({src: src}));
+    this.$(this.ui.teamLogoPrevisualizeContainer).html(this.logoPrevisualizeTemplate({
+      src: src,
+      file: false
+    }));
+    this.teamLogo = src;
+  },
+
+  renderTeamLogo: function(src) {
+    this.$(this.ui.teamLogoPrevisualizeContainer).html(this.logoPrevisualizeTemplate({
+      src: src,
+      file: true
+    }));
     this.teamLogo = src;
   },
 
@@ -273,7 +373,7 @@ app.ManageTeamView = Backbone.View.extend({
 
     if (!app.mainView.validateForm()) {
       app.mainView.toggleSpinner(false);
-      Materialize.toast('¡Por favor, rellena correctamente el formulario de contacto!', 3000);
+      Materialize.toast(app.lang.form_wrong, 3000);
       return;
     }
 
@@ -281,7 +381,8 @@ app.ManageTeamView = Backbone.View.extend({
       name = this.$(this.ui.manage_team_name).val(),
       email = this.$(this.ui.manage_team_email).val(),
       province_id = this.$(this.ui.provincesSelect).find(':selected').val(),
-      township_id = this.$(this.ui.townshipsSelect).find(':selected').val();
+      township_id = this.$(this.ui.townshipsSelect).find(':selected').val(),
+      position = this.getMarkerData();
 
     if (this.teamLogo) {
       formData['logo'] = this.teamLogo;
@@ -291,6 +392,8 @@ app.ManageTeamView = Backbone.View.extend({
     formData['email'] = email;
     formData['province_id'] = province_id;
     formData['township_id'] = township_id;
+    formData['lat'] = position.lat;
+    formData['lng'] = position.lng;
 
     this.model.set(formData);
 
@@ -336,13 +439,57 @@ app.ManageTeamView = Backbone.View.extend({
 
   renderCupsWonCounter: function () {
 
-  }
+  },
 
   /* if (!app.mainView.validateForm()) {
    Materialize.toast('¡Por favor, rellena correctamente el formulario de contacto!', 3000);
    return;
    } */
 
+  getMinTrainingTime: function () {
+    var time = new Date();
+    time.setHours()
+  },
+
+  deleteMarkers: function () {
+    this.setMapOnAll(null);
+    this.markers = [];
+  },
+
+  setMapOnAll: function (map) {
+    for (var i = 0; i < this.markers.length; i++) {
+      this.markers[i].setMap(map);
+    }
+  },
+
+  pinSymbol: function (color) {
+    return {
+      path: 'M 0,0 C -2,-20 -10,-22 -10,-30 A 10,10 0 1,1 10,-30 C 10,-22 2,-20 0,0 z M -2,-30 a 2,2 0 1,1 4,0 2,2 0 1,1 -4,0',
+      fillColor: color,
+      fillOpacity: 0.8,
+      strokeColor: '#000',
+      strokeWeight: 1,
+      scale: 1
+    };
+  },
+  addMarker: function (location, map) {
+    var marker = new google.maps.Marker({
+      position: location,
+      icon: this.pinSymbol("rgba(150, 1, 1, 0.8)"),
+      map: map
+    });
+    this.markers.push(marker);
+  },
+
+  getMarkerData: function () {
+    var lat = this.markers[0].position.lat() || 0,
+      lng = this.markers[0].position.lng() || 0;
+
+    return {
+      lat: lat,
+      lng: lng
+    }
+  }
 
   //TODO: Send email to team, if its filled!!!
 

@@ -3,6 +3,7 @@ var app = app || {};
 app.QuidditchTeamsBrowserRouter = Backbone.Router.extend({
   routes: {
     "(/)": "getHomePage",
+    "map(/)": "getMap",
     "teams(/)": "getTeamsGallery",
     "teams/:id(/)": "getTeamProfile",
     "add(/)": "manageTeamForm",
@@ -61,5 +62,13 @@ app.QuidditchTeamsBrowserRouter = Backbone.Router.extend({
   getCurrentRoute: function () {
     var route = Backbone.history.getFragment();
     return (route.substr(0, route.indexOf('/')) == '') ? 'home' : route.substr(0, route.indexOf('/'));
+  },
+
+  getMap: function() {
+    app.mainView.hideAllPages();
+    app.mainView.showPage(app.mainView.ui.pages.home_map);
+    app.homeMapView = new app.HomeMapView();
+
+
   }
 });

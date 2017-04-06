@@ -13,4 +13,6 @@ You need a php server. Locally, using XAMPP or remote, and importing booklibrary
 3. **grunt copy:ci**
 4. **grunt**
 
+I use https://github.com/googlemaps/js-marker-clusterer
+
 

@@ -53,7 +53,9 @@ select.qtb-select-input:focus {
 
 html, body {
   width: 100%;
-  height: 100%; }
+  height: 100%;
+  margin: 0;
+  padding: 0; }
 
 html {
   background-image: url("../images/bg.jpg");
@@ -96,6 +98,27 @@ i.material-icons {
   /* Non-prefixed version, currently
                                    supported by Chrome and Opera */ }
 
+.qtb-spinner-container {
+  position: fixed;
+  top: 5%;
+  left: 5%;
+  width: 100px;
+  height: 100px; }
+
+.qtb-spinner-image {
+  width: 100%;
+  height: 100%; }
+
+.qtb-loading-background {
+  position: absolute;
+  width: 100%;
+  height: 200%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 10; }
+
+.qtb-home-map {
+  height: 100%; }
+
 .qtb-nav {
   background-color: rgba(150, 1, 1, 0.8);
   height: 48px;
@@ -115,13 +138,20 @@ i.material-icons {
     font-size: 14px;
     height: 48px; }
     .qtb-nav .brand-logo img {
-      height: 100%; }
+      max-width: 100%;
+      max-height: 100%;
+      vertical-align: middle; }
 
 .qtb-disclaimer {
   padding: 10px;
   text-align: center;
   background-color: #E13300;
   color: #ffff00; }
+
+.qtb-lang-list .qtb-lang-flag {
+  display: inline-block;
+  vertical-align: middle;
+  max-height: 24px; }
 
 .qtb-search-form {
   overflow: hidden; }
@@ -218,7 +248,10 @@ i.material-icons {
   display: block;
   background: #FFFFFF;
   height: 46px;
-  line-height: 46px; }
+  line-height: 46px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; }
   .qtb-search-input-results-list-container li.qtb-search-input-result:hover {
     cursor: pointer;
     background-color: rgba(255, 255, 255, 0.9); }
@@ -229,6 +262,35 @@ i.material-icons {
     max-height: 34px;
     margin: 0 10px;
     vertical-align: middle; }
+
+.qtb-last-teams-list-wrapper {
+  background-color: rgba(255, 255, 255, 0.9); }
+
+.qtb-home-last-team:hover {
+  cursor: pointer;
+  background-color: rgba(255, 255, 255, 0.9); }
+.qtb-home-last-team span {
+  padding: 20px 0px; }
+.qtb-home-last-team a {
+  text-decoration: none;
+  color: #000000; }
+.qtb-home-last-team:last-child {
+  border-bottom-left-radius: 2px;
+  border-bottom-right-radius: 2px; }
+
+.qtb-last-teams-title {
+  display: block;
+  font-size: 25px;
+  text-align: center;
+  color: #960101; }
+
+.qtb-home-last-team-logo {
+  max-height: 34px;
+  vertical-align: middle;
+  margin: 0 10px; }
+
+.qtb-last-teams-container {
+  margin-top: 25px; }
 
 .qtb-team-profile-container {
   background: white;
@@ -261,6 +323,11 @@ li.qtb-team-profile-name {
   .qtb-team-profile-contact-form-container .col {
     padding: 0 !important; }
 
+.qtb-team-profile-controls-btn#edit_team {
+  background: #fff121;
+  cursor: pointer;
+  color: #ae0001; }
+
 .qtb-manage-team-container {
   background: white;
   border-radius: 2px;
@@ -286,6 +353,15 @@ li.qtb-team-profile-name {
 #manage_team_logo_path {
   display: none; }
 
+#manage_team_map {
+  height: 300px; }
+
+input#qtb-search-input {
+  width: 200px;
+  height: 29px;
+  margin-top: 10px;
+  background: #ffffff; }
+
 div.qtb-cropper-controls-btn {
   width: 100%;
   margin: 5px 0;
@@ -303,5 +379,60 @@ div.qtb-cropper-controls-btn {
     padding: 0; }
   div.qtb-cropper-controls-btn.disabled {
     background-color: #d6d6d6 !important; }
+
+#home-map {
+  position: absolute;
+  width: 100%;
+  height: calc(100% - 90px);
+  margin: 0;
+  left: 0; }
+
+.controls {
+  margin-top: 10px;
+  border: 1px solid transparent;
+  border-radius: 2px 0 0 2px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  height: 32px;
+  outline: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3); }
+
+#qt-search-input {
+  background-color: #fff;
+  font-family: Roboto;
+  font-size: 15px;
+  font-weight: 300;
+  margin-left: 12px;
+  padding: 0 11px 0 13px;
+  text-overflow: ellipsis;
+  width: 300px; }
+
+#qt-search-input:focus {
+  border-color: #4d90fe; }
+
+#type-selector {
+  color: #fff;
+  background-color: #4d90fe;
+  padding: 5px 11px 0px 11px; }
+
+#type-selector label {
+  font-family: Roboto;
+  font-size: 13px;
+  font-weight: 300; }
+
+.qtb-infowindow-container {
+  width: 200px;
+  text-align: center; }
+  .qtb-infowindow-container .qtb-infowindow-team-logo-container {
+    max-width: 75px;
+    margin: 0 auto; }
+    .qtb-infowindow-container .qtb-infowindow-team-logo-container img {
+      display: block;
+      width: 100%; }
+  .qtb-infowindow-container .qtb-infowindow-team-name {
+    font-size: 16px;
+    font-weight: bold; }
+  .qtb-infowindow-container .qtb-infowindow-team-location {
+    font-size: 14px; }
 
 /*# sourceMappingURL=main.css.map */

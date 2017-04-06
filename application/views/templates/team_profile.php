@@ -1,7 +1,7 @@
 <script id="teamProfileTemplate" type="text/template">
   <div class="qtb-team-profile-logo-container col s4 m3 l3">
-    <% src = logo ? logo : 'dist/images/badges/defaultlogo.jpg' %>
-    <img src="<%= src %>" class="qtb-team-profile-logo" alt="<%= name %>" title="<%= name %>"/>
+    <% var logo = logo ? 'dist/images/badges/teams/' + logo : 'dist/images/badges/defaultlogo.jpg' %>
+    <img src="<%= logo %>" class="qtb-team-profile-logo" alt="<%= name %>" title="<%= name %>"/>
   </div>
   <div class="qtb-team-profile-info-container col s8 m9 l9">
     <ul class="qtb-team-profile-info">
@@ -17,17 +17,17 @@
       <li>
         <% if (formatedEmail) { %>
         <a href="mailto:<%=formatedEmail%>">
-          Enviar e-mail
+          <%= app.lang.send_email %>
         </a>
         <% } %>
       </li>
     </ul>
   </div>
-  <div class="qtb-team-profile-controls-container col s12 m12 l12">
+  <!-- <div class="qtb-team-profile-controls-container col s12 m12 l12">
     <div class="qtb-team-profile-controls-btn btn btn-default col s3 right" id="edit_team">
-      Editar
+      <%= app.lang.edit %>
     </div>
-  </div>
+  </div> -->
 
   <!-- <% if (formatedEmail) { %> -->
  <!-- <div class="qtb-team-profile-contact-form-container col s12">

@@ -35,7 +35,16 @@
   //left: -9999999px;
 }
 
+#manage_team_map {
+  height: 300px;
+}
 
+input#qtb-search-input {
+  width: 200px;
+  height: 29px;
+  margin-top: 10px;
+  background: $white;
+}
 
 div.qtb-cropper-controls-btn {
   width: 100%;

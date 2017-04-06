@@ -30,6 +30,9 @@ module.exports = function (grunt) {
           {
             expand: true, cwd: 'app/scripts', src: ['**/*.js'], dest: 'dist/scripts'
           },
+          {
+            expand: true, cwd: 'app/lang', src: ['**/*.json'], dest: 'dist/lang'
+          },
         ]
       },
       images: {

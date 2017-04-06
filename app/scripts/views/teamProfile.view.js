@@ -84,7 +84,7 @@ app.TeamProfileView = Backbone.View.extend({
     var view = this;
 
     if (!app.mainView.validateForm()) {
-      Materialize.toast('¡Por favor, rellena correctamente el formulario de contacto!', 3000);
+      Materialize.toast(app.lang.form_wrong, 3000);
       return;
     }
 

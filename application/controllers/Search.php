@@ -14,6 +14,14 @@ class Search extends CI_Controller
   {
   }
 
+  public function lastTeams()
+  {
+    $result = $this->Search_teams_model->getLastTeams();
+    echo json_encode($result);
+    die();
+
+  }
+
   public function short()
   {
     $result = [];
@@ -47,7 +55,7 @@ class Search extends CI_Controller
     $subject = $this->input->post('subject');
     //$message = $this->input->post('message');
     $fromEmail = $this->input->post('from');
-    $fromName = explode("@",$fromEmail)[0];
+    $fromName = explode("@", $fromEmail)[0];
 
     $teamId = $this->input->post('id');
     $teamName = $this->Search_teams_model->teamSearch($teamId)[0]->name;
@@ -141,7 +149,7 @@ class Search extends CI_Controller
                     <tr>
                       <td style="font-family:sans-serif;font-size:14px;vertical-align:top;">
                         <p style="font-family:sans-serif;font-size:14px;font-weight:normal;margin:0;Margin-bottom:15px;">Hola ' . $teamName . ',</p>
-                        <p style="font-family:sans-serif;font-size:14px;font-weight:normal;margin:0;Margin-bottom:15px;">'.$fromName.' you just want to send a simple HTML email with a simple design and clear call to action. This is it.</p>
+                        <p style="font-family:sans-serif;font-size:14px;font-weight:normal;margin:0;Margin-bottom:15px;">' . $fromName . ' you just want to send a simple HTML email with a simple design and clear call to action. This is it.</p>
                         <table border="0" cellpadding="0" cellspacing="0" class="btn btn-primary" style="border-collapse:separate;mso-table-lspace:0pt;mso-table-rspace:0pt;box-sizing:border-box;width:100%;">
                           <tbody>
                             <tr>
@@ -248,8 +256,15 @@ class Search extends CI_Controller
     $email = $post_params['email'];
     $logo = $post_params['logo'];
     $township = $post_params['township_id'];
+    $lat = $post_params['lat'];
+    $lng = $post_params['lng'];
+    $src = '';
 
-    $this->Search_teams_model->editTeam($id, $name, $email, $township, $logo);
+    if ($logo) {
+      $src = $this->savelogo2file($id, $logo);
+    }
+
+    $this->Search_teams_model->editTeam($id, $name, $email, $township, $src, $lat, $lng);
 
     $response = array('status' => 'OK');
 
@@ -262,6 +277,22 @@ class Search extends CI_Controller
 
   }
 
+  private function getLogoSrc($id = 0) {
+    return "logo_".$id.".png";
+  }
+
+  private function savelogo2file($id, $logo) {
+    $path = "/dist/images/badges/teams/".$this->getLogoSrc($id);
+    list($type, $logo) = explode(';', $logo);
+    list(, $logo)      = explode(',', $logo);
+    $data = base64_decode($logo);
+    $fp = fopen($_SERVER['DOCUMENT_ROOT'] . $path,"wb");
+    fwrite($fp,$data);
+    fclose($fp);
+
+    return $this->getLogoSrc($id);
+  }
+
   private function addNewTeam()
   {
     $post_params = $this->get_post();
@@ -269,9 +300,19 @@ class Search extends CI_Controller
     $name = $post_params['name'];
     $email = $post_params['email'];
     $logo = $post_params['logo'];
-    $township = $post_params['township_id'];
+    $src = '';
 
-    $id = $this->Search_teams_model->addTeam($name, $email, $township, $logo);
+    $township = $post_params['township_id'];
+    $lat = $post_params['lat'];
+    $lng = $post_params['lng'];
+
+    $id = $this->Search_teams_model->addTeam($name, $email, $township, $logo, $lat, $lng);
+
+    if ($logo) {
+      $src = $this->savelogo2file($id, $logo);
+    }
+
+    $id = $this->Search_teams_model->editTeamLogo($id, $src);
 
     $response = array('id' => $id);
 
@@ -295,4 +336,17 @@ class Search extends CI_Controller
     return json_decode($rest_json, true);
   }
 
+
+  public function getMapTeams()
+  {
+    $result = $this->Search_teams_model->getMapTeams();
+    echo json_encode($result);
+    die();
+  }
+
+  public function setLang()
+  {
+    $lang = $this->input->post('lang');
+    set_cookie('qtb_lang', $lang);
+  }
 }

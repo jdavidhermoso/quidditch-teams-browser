@@ -1,7 +1,7 @@
 <div class="col s12 qtb-manage-team-container"></div>
 <script id="manageTeamTemplate" type="text/template">
   <form id="manage_team_form">
-    <div class="qtb-manage-team-fields-container">
+    <div class="qtb-manage-team-fields-container col s12 m12 l12">
       <div class="input-field col s12 m6 l6">
         <%
           var name_active = '';
@@ -10,7 +10,7 @@
           }
         %>
         <label for="manage_team_name" class="<%= name_active %>" >
-          Nombre
+          <%= app.lang.name %>
         </label>
         <input type="text" id="manage_team_name" class="qtb-text-field" maxlength="100" value="<%= name %>" required/>
       </div>
@@ -22,26 +22,30 @@
           }
         %>
         <label for="manage_team_email" class="<%= email_active %>">
-          E-mail
+          <%= app.lang.email %>
         </label>
         <input type="email" id="manage_team_email" class="qtb-email-field" value="<%= email %>"/>
       </div>
+
       <div class="col s12 m6 l6">
-        <label>Província</label>
+        <label>
+          <%= app.lang.province %>
+        </label>
         <select id="manage_team_province" class="browser-default qtb-select-input">
         </select>
       </div>
       <div class="col s12 m6 l6">
-        <label>Municipio</label>
+        <label>
+          <%= app.lang.township %>
+        </label>
         <select id="manage_team_township" class="browser-default qtb-select-input">
         </select>
       </div>
     </div>
-
-    <div class="qtb-manage-team-fields-container">
+    <div class="qtb-manage-team-fields-container col s12 m12 l12">
       <div class="qtb-logo-selector-wrapper col s12 m12 l12">
         <p class="qtb-manage-team-form-section-title">
-          Añadir logo
+          <%= app.lang.add_logo %>
         </p>
         <div class="qtb-manage-team-logo-previsualize col s12 m10 l10" id="manage_team_logo_previsualize_container">
 
@@ -94,6 +98,42 @@
       </div> -->
     </div>
 
+
+    <div class="qtb-manage-team-fields-container col s12 m12 l12">
+      <div class="input-field col s12 m12 l12">
+        <div class="qtb-manage-team-map-container">
+          <input id="qtb-search-input" class="browser-default controls" type="text" placeholder="Search Box" />
+          <div class="qtb-manage-team-map" id="manage_team_map"></div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- <div class="qtb-manage-team-fields-container">
+      <p>
+        ¿Cuándo jugais?
+      </p>
+      <div class="col s12 m2 l2">
+        <label for="">Día</label>
+        <select class="browser-default qtb-select-input manage_team_training_day"></select>
+      </div>
+      <div class="col s12 m2 l2">
+        <label>Hora</label>
+        <select class="browser-default qtb-select-input manage_team_training_time">
+        </select>
+      </div>
+
+      <div class="col s12 m2 l2">
+        <label>Hora</label>
+        <button type="submit" id="manage_team_submit" class="btn default qtb-contact-btn">
+          Añadir día
+        </button>
+      </div>
+
+    </div> -->
+
+
+
     <div class="col s12 m12 l12">
       <div class="qtb-contact-submit-btn-container right">
         <button type="submit" id="manage_team_submit" class="btn default qtb-contact-btn">
@@ -110,7 +150,18 @@
 </script>
 
 <script id="manageTeamPrevisualizeTemplate" type="text/template">
-  <img src="<%= src %>" id="manage_team_logo_previsualize_image" class="qtb-team-logo-previsualize-img" alt=""
+  <%
+    var logo = 'dist/images/badges/defaultlogo.jpg',
+        path = 'dist/images/badges/teams/';
+    if (src) {
+      logo = src;
+      if (file) {
+        logo = path + src;
+      }
+    }
+  %>
+
+  <img src="<%= logo %>" id="manage_team_logo_previsualize_image" class="qtb-team-logo-previsualize-img" alt=""
        title=""/>
 </script>
 
@@ -127,4 +178,8 @@
   <div class="qtb-cups-input-won-counter">
     <span><%= cups %></span>
   </div>
+</script>
+
+<script id="trainingDayTimeOptionTemplate" type="text/template">
+  <option value="<%= value %>"> <%= word %> </option>
 </script>
