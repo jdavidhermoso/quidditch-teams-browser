@@ -18,8 +18,9 @@
   "something_wrong": "Qualque cosa no ha anat be!",
   "form_wrong": "¡Per favor, emplena correctament el formulari de contacte!",
   "last_teams_added": "Darrers equips afegits",
-  "search_team": "Cercar un equip",
   "languages": "Idiomes",
   "map": "Mapa",
-  "search_team": "Cercar equip"
+  "search_team": "Cercar equip",
+  "view_profile": "Veure",
+  "teams": "Llista de equips"
 }

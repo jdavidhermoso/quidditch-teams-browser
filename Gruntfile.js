@@ -86,7 +86,7 @@ module.exports = function (grunt) {
     uglify: {
       dist: {
         files: {
-          'dist/scripts/dist.min.js': ['app/**/*.js']
+          'dist/scripts/dist.min.js': ['app/**/*.js','app/*.js']
         }
       }
     },
@@ -104,5 +104,5 @@ module.exports = function (grunt) {
 
   grunt.registerTask('dev', ['sass', 'copy:css', 'copy:js', 'copy:images', 'copy:fonts', 'copy:other', 'watch']);
   grunt.registerTask('codechecks', ['sasslint', 'jscs', 'jshint']);
-  grunt.registerTask('default', ['dev']);
+  grunt.registerTask('default', ['dev', 'uglify']);
 };

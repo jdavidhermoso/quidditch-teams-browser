@@ -2,7 +2,6 @@ var app = app || {};
 app.MainView = Backbone.View.extend({
   el: '#qtb_pages_container',
   workingDisclaimerTemplate: _.template(this.$('#workingDisclaimerTemplate').html()),
-  homeTitleLastTeamsTemplate: _.template(this.$('#homeTitleLastTeamsTemplate').html()),
   navTemplate: _.template(this.$('#navTemplate').html()),
   events: {
     'input input[type=email]': 'capitalizeEmail',
@@ -15,14 +14,15 @@ app.MainView = Backbone.View.extend({
       'home': '#home',
       'home_map': '#home-map',
       'team_profile': '#team_profile',
-      'manage_team': '#manage_team'
+      'manage_team': '#manage_team',
+      'teams_gallery': '#teams_gallery'
     },
     'spinner': '#spinner_image'
   },
   initialize: function () {
     var view = this;
     //$(".qtb-home-updates-disclaimer").html(this.workingDisclaimerTemplate());
-    $(".qtb-last-teams-title").html(this.homeTitleLastTeamsTemplate());
+
     $(".qtb-nav").html(this.navTemplate());
     $('.qtb-lang-link').on('click', function (e) {
       e.stopPropagation();

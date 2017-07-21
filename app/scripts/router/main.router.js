@@ -7,7 +7,7 @@ app.QuidditchTeamsBrowserRouter = Backbone.Router.extend({
     "teams(/)": "getTeamsGallery",
     "teams/:id(/)": "getTeamProfile",
     "add(/)": "manageTeamForm",
-    "editTeam/:id(/)": "manageTeamForm",
+    //"editTeam/:id(/)": "manageTeamForm",
     ":whatever": "notFound"
   },
   navigateToHome: function () {
@@ -25,7 +25,9 @@ app.QuidditchTeamsBrowserRouter = Backbone.Router.extend({
     app.mainView.showPage(app.mainView.ui.pages.home);
   },
   getTeamsGallery: function () {
-    this.navigateToHome();
+    app.mainView.hideAllPages();
+    app.mainView.showPage(app.mainView.ui.pages.teams_gallery);
+    var teamsGallery = new app.TeamsGallery();
   },
   getTeamProfile: function (id) {
     app.mainView.toggleSpinner(true);

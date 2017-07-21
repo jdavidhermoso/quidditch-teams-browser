@@ -1,8 +1,9 @@
 var app = app || {};
 app.TeamProfileView = Backbone.View.extend({
   tagName: 'div',
-  className: 'qtb-team-profile-container col s12 m8 l8 offset-m2 offset-l2',
+  className: '',
   template: _.template($('#teamProfileTemplate').html()),
+  cardTemplate: _.template($('#teamCardTemplate').html()),
   teamNotFoundTemplate: _.template($('#teamNotFoundTemplate').html()),
   events: {
     'click #contact_team': 'sendEmail',
@@ -48,14 +49,19 @@ app.TeamProfileView = Backbone.View.extend({
 
   render: function (team) {
     var teamData = _.extend(team.toJSON(), {formatedEmail: this.renderEmailAddress(team.toJSON().email)});
-    $(app.mainView.ui.pages.team_profile).html(this.$el.html(this.template(teamData)));
-    app.mainView.toggleSpinner(false);
+    return this.$el.html(this.template(teamData));
+  },
+
+  renderTeamCard: function(team) {
+    var teamData = team.toJSON();
+    return this.$el.html(this.cardTemplate(teamData));
   },
 
   renderTeams: function (teams) {
     teams.each(function (team) {
-      this.render(team);
+      $(app.mainView.ui.pages.team_profile).html(this.render(team));
     }, this);
+    app.mainView.toggleSpinner(false);
   },
 
   renderTeamNotFound: function () {

@@ -3,7 +3,6 @@ app.SearchFormView = Backbone.View.extend({
   el: '#home',
   searchTpl: _.template( $( '#homeSearchTeamTemplate' ).html() ),
   searchResultsListTpl: _.template( $( '#searchResultsListTemplate' ).html() ),
-  lastTeamsListTpl: _.template( $( '#lastTeamsTemplate' ).html() ),
   events: {
     'input #search_input': 'performShortSearch',
     'click #search_button': 'performSearch',
@@ -22,31 +21,15 @@ app.SearchFormView = Backbone.View.extend({
     this.$('.qtb-search-form-container').html(this.searchTpl());
     app.mainView.toggleSpinner(false);
 
-    this.listenTo(app.teamsCollection, 'beforeFetch', function() {
+    /*this.listenTo(app.teamsCollection, 'beforeFetch', function() {
       app.mainView.toggleSpinner(true);
-    });
+    }); */
 
     this.setLastTeamsURL();
-    app.teamsCollection.fetch({
-      reset: true,
-      success: function() {
-        view.$(view.ui.last_teams_list).empty();
-        app.mainView.toggleSpinner(false);
-        app.teamsCollection.each(function (team) {
-          view.renderLastTeams(team);
-        }, this);
-      },
-      error: function() {
-        view.$(view.ui.last_teams_list).empty();
-      }
-    });
+
 
   },
   render: function() {
-  },
-
-  renderLastTeams: function(teamModel) {
-    this.$(this.ui.last_teams_list).append(this.lastTeamsListTpl(teamModel.attributes));
   },
 
   renderSearchResultItem: function(teamModel) {

@@ -24,7 +24,7 @@ class Search_teams_model extends CI_Model
   {
     $teamsGroup = array();
     $teamArr = array();
-    $query = "SELECT team.id, team.name, team.logo, team.email, p.name as province, t.name as township FROM qtb_teams team LEFT JOIN townships t ON t.id = team.township LEFT JOIN provinces p ON p.id = t.province WHERE active = 1 ORDER BY team.name ASC, p.name ASC, t.name ASC LIMIT 1";
+    $query = "SELECT team.id, team.name, team.logo, team.email, p.name as province, t.name as township FROM qtb_teams team LEFT JOIN townships t ON t.id = team.township LEFT JOIN provinces p ON p.id = t.province WHERE active = 1 ORDER BY team.name ASC, p.name ASC, t.name";
     $teamsQuery = $this->db->query($query);
     foreach ($teamsQuery->result() as $team) {
       $teamArr['id'] = $team->id;
@@ -32,7 +32,7 @@ class Search_teams_model extends CI_Model
       $teamArr['logo'] = $team->logo;
       $teamArr['email'] = $team->email;
       $teamArr['province'] = $team->province;
-      $teamArr['township'] = $team->town;
+      $teamArr['township'] = $team->township;
       array_push($teamsGroup, $teamArr);
       unset($teamArr);
     }
@@ -90,6 +90,10 @@ class Search_teams_model extends CI_Model
   public function editTeamLogo($id = '', $src = '')
   {
     return $this->db->query("UPDATE qtb_teams SET logo='$src' WHERE id = $id");
+  }
+
+  public function getImages() {
+    return $this->db->query("SELECT logo from qtb_teams ORDER by id ASC")->result();
   }
 }
 

@@ -1,9 +1,5 @@
 <script id="navTemplate" type="text/template">
-
-
   <a href="#" class="brand-logo center">
-    <img src="dist/images/logo.png" class="responsive-img" alt="Buscador de equipos españoles de quidditch"
-         title="Buscador de equipos españoles de quidditch">
   </a>
   <span id="sidebar_open_btn" data-activates="sidebar_nav" class="qtb-side-nav-open-btn button-collapse">
       <i class="material-icons valign">menu</i>
@@ -14,6 +10,13 @@
         <%= app.lang.search_team %>
       </a>
     </li>
+
+    <li class="hide-on-med-and-down">
+      <a href="#/teams">
+        <%= app.lang.teams %>
+      </a>
+    </li>
+
     <li class="hide-on-med-and-down">
       <a href="#/map">
         <%= app.lang.map %>
@@ -28,6 +31,11 @@
       <li class="hide-on-med-and-up">
         <a href="#/">
           <%= app.lang.search_team %>
+        </a>
+      </li>
+      <li class="hide-on-med-and-up">
+        <a href="#/teams">
+          <%= app.lang.teams %>
         </a>
       </li>
       <li class="hide-on-med-and-up">

@@ -277,17 +277,19 @@ class Search extends CI_Controller
 
   }
 
-  private function getLogoSrc($id = 0) {
-    return "logo_".$id.".png";
+  private function getLogoSrc($id = 0)
+  {
+    return "logo_" . $id . ".png";
   }
 
-  private function savelogo2file($id, $logo) {
-    $path = "/dist/images/badges/teams/".$this->getLogoSrc($id);
+  private function savelogo2file($id, $logo)
+  {
+    $path = "/dist/images/badges/teams/" . $this->getLogoSrc($id);
     list($type, $logo) = explode(';', $logo);
-    list(, $logo)      = explode(',', $logo);
+    list(, $logo) = explode(',', $logo);
     $data = base64_decode($logo);
-    $fp = fopen($_SERVER['DOCUMENT_ROOT'] . $path,"wb");
-    fwrite($fp,$data);
+    $fp = fopen($_SERVER['DOCUMENT_ROOT'] . $path, "wb");
+    fwrite($fp, $data);
     fclose($fp);
 
     return $this->getLogoSrc($id);
@@ -348,5 +350,37 @@ class Search extends CI_Controller
   {
     $lang = $this->input->post('lang');
     set_cookie('qtb_lang', $lang);
+  }
+
+  public function compress($source, $destination, $quality)
+  {
+
+    $info = getimagesize($source);
+
+    if ($info['mime'] == 'image/jpeg')
+      $image = imagecreatefromjpeg($source);
+
+    elseif ($info['mime'] == 'image/gif')
+      $image = imagecreatefromgif($source);
+
+    elseif ($info['mime'] == 'image/png')
+      $image = imagecreatefrompng($source);
+
+    imagejpeg($image, $destination, $quality);
+
+    return $destination;
+  }
+
+  public function reduceImagesSize()
+  {
+    //NOT FOR PRODUCTION!!
+    $result = $this->Search_teams_model->getImages();
+    foreach ($result as $image) {
+      $source_img = 'dist/images/badges/teams/' . $image->logo;
+      $destination_img_name = explode(".", $image->logo)[0];
+      $destination_img = "dist/images/badges/teams/" . $destination_img_name . ".jpg";
+
+      $d = $this->compress($source_img, $destination_img, 60);
+    }
   }
 }

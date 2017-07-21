@@ -1,31 +1,35 @@
 var app = app || {};
 app.TeamsGallery = Backbone.View.extend({
   el: '#teams_gallery',
-  events: {
-  },
+  events: {},
   ui: {},
-  initialize: function() {
-    this.listenTo(app.teamsCollection, 'reset', this.render);
+  initialize: function () {
+    var view = this;
     this.setTeamsGalleryURL();
     app.teamsCollection.fetch({
-      reset: true
+      reset: true,
+      success: function () {
+        view.render();
+      },
+      error: function () {
+      }
     });
-
-    this.render();
   },
 
-  setTeamsGalleryURL: function() {
+  setTeamsGalleryURL: function () {
     app.teamsCollection.url = app.teamsCollection.urls.teamsGalleryURL;
   },
-  render: function() {
+  render: function () {
     this.$el.empty();
     app.teamsCollection.each(function (team) {
       this.renderTeamProfile(team);
     }, this);
+    app.mainView.toggleSpinner(false);
   },
 
-  renderTeamProfile: function(team) {
+  renderTeamProfile: function (team) {
     var teamProfileView = new app.TeamProfileView(team.toJSON());
-    this.$el.append(teamProfileView.render(t));
+
+    this.$el.append(teamProfileView.renderTeamCard(team));
   }
 });
