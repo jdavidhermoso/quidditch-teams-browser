@@ -8,7 +8,7 @@ http://quiddkidsapp.journey2mallorca.com/#/map
 
 ###### Steps for deploying
 **Previous** 
-You need a php server. Locally, using XAMPP or remote, and importing booklibrary.sql file onto a MySql database. 
+You need a php server. Locally, using XAMPP or remote, and importing quidditchBrowser.sql file onto a MySql database. 
 
 1. **npm install**
 2. **bower install**
